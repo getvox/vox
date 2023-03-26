@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+package rpc.sess;
+
+service Sess {
+  rpc Login(LoginReq) returns (LoginRsp) {}
+  rpc Logout(LogoutReq) returns (LogoutRsp) {}
+  rpc Disconnect(DisconnectReq) returns (DisconnectRsp) {}
+  rpc Heartbeat(HeartbeatReq) returns (HeartbeatRsp) {}
+
+  rpc GetOnline(GetOnlineReq) returns (GetOnlineRsp) {}
+}
+
+message LoginReq {
+  string uin = 1;
+  string platform = 2;
+  string server = 3;
+  string device_id = 4;
+  string device_name = 5;
+  string token = 6;
+  string tag = 7;
+  bool is_new = 8;
+}
+
+message LoginRsp {
+  string conn_id = 1;
+  string other_device_id = 2;
+  string other_device_name = 3;
+}
+
+message LogoutReq {
+  string uin = 1;
+  string conn_id = 2;
+}
+
+message LogoutRsp {
+}
+
+
+message DisconnectReq {
+  string uin = 1;
+  string conn_id = 2;
+}
+
+message DisconnectRsp {
+}
+
+message HeartbeatReq {
+  string uin = 1;
+  string conn_id = 2;
+  string server = 3;
+}
+
+message HeartbeatRsp {
+}
+
+message ConnInfo {
+  string conn_id = 1;
+  string device_id = 2;
+  string server = 3;
+  int32 status = 4;
+}
+
+message GetOnlineReq {
+  string uin = 1;
+}
+
+message GetOnlineRsp {
+  repeated ConnInfo conns = 1;
+}
