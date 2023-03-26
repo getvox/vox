@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+option go_package = "github.com/iobrother/zim/conn/protocol";
+
+package zim.conn.protocol;
+
+enum CmdId {
+  Cmd_Raw = 0;
+
+  Cmd_Noop = 6;
+  Cmd_Signalling = 243;
+
+  Cmd_Error = 500;
+
+  // conn
+  Cmd_Login = 1001;
+  Cmd_Logout = 1002;
+  Cmd_Kick = 1003;
+}
+
+enum ErrorCode {
+  Success = 0;
+  InvalidToken = 1001; // 无效的令牌
+  TokenExpired = 1002; // 令牌过期
+  TokenRevoked = 1003; // 令牌已被吊销
+  LoginConflict = 1004; // 登录冲突
+}
+
+message Error {
+  int32 code = 1;
+  string message = 2;
+}
+
+message LoginReq {
+  string uin = 1;
+  string tag = 2;
+  string token = 3;
+  string device_id = 4;
+  string device_name = 5;
+  string platform = 6;
+  bool reconnect = 7;
+}
+
+message LoginRsp {
+
+}
+
+message LogoutReq {
+
+}
+
+message LogoutRsp {
+
+}
+
+message Noop {
+
+}
+
+message Kick {
+  string reason = 1;
+}
