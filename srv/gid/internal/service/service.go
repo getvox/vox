@@ -41,15 +41,6 @@ func getMachineId() (uint16, error) {
 	return cast.ToUint16(machineId), nil
 }
 
-func (s *Service) GetServerId(ctx context.Context, req *gid.GetServerIdReq, rsp *gid.GetServerIdRsp) (err error) {
-	machineId, err := getMachineId()
-	if err != nil {
-		return
-	}
-	rsp.ServerId = cast.ToString(machineId)
-	return
-}
-
 func (s *Service) Get(ctx context.Context, req *gid.GetReq, rsp *gid.GetRsp) (err error) {
 	rsp.Id = s.snowflake.NextId()
 	return

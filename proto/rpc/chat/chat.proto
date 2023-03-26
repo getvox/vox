@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+package rpc.chat;
+
+import "rpc/common/entry.proto";
+
+service Chat {
+  rpc SendMsg(SendReq) returns (SendRsp) {}
+  rpc SyncMsg(SyncMsgReq) returns (SyncMsgRsp) {}
+  rpc MsgAck(MsgAckReq) returns (MsgAckRsp) {}
+  rpc Recall(RecallReq) returns (RecallRsp) {}
+  rpc DeleteMsg(DeleteMsgReq) returns (DeleteMsgRsp) {}
+}
+
+message SendReq {
+  int32 conv_type = 1;
+  int32 msg_type = 2;
+  string sender = 3;
+  string target = 4;
+  string content = 5;
+  string client_uuid = 6;
+  repeated string at_user_list = 7;
+  bool is_transparent = 8;
+}
+
+message SendRsp {
+  int32 code = 1;
+  string message = 2;
+  int64 id = 3;
+  int64 send_time = 4;
+  string client_uuid = 5;
+}
+
+message SyncMsgReq {
+  string uin = 1;
+  int64 offset = 2;
+  int64 limit = 3;
+}
+
+message SyncMsgRsp {
+  repeated common.Msg list = 1;
+}
+
+message MsgAckReq {
+  string uin = 1;
+  int64 id = 2;
+}
+
+message MsgAckRsp {
+}
+
+message RecallReq {
+  string uin = 1;
+  int64 id = 2;
+}
+
+message RecallRsp {
+}
+
+message DeleteMsgReq {
+  string uin = 1;
+  repeated int64 ids = 2;
+}
+
+message DeleteMsgRsp {
+}

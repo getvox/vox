@@ -23,9 +23,6 @@ var _ = protocol.NewMessage
 type GidAble interface {
 	// GidAble can be used for interface verification.
 
-	// GetServerId is server rpc method as defined
-	GetServerId(ctx context.Context, args *GetServerIdReq, reply *GetServerIdRsp) (err error)
-
 	// Get is server rpc method as defined
 	Get(ctx context.Context, args *GetReq, reply *GetRsp) (err error)
 
@@ -43,16 +40,6 @@ func ServeForGid(addr string) error {
 	s := server.NewServer()
 	s.RegisterName("Gid", new(GidImpl), "")
 	return s.Serve("tcp", addr)
-}
-
-// GetServerId is server rpc method as defined
-func (s *GidImpl) GetServerId(ctx context.Context, args *GetServerIdReq, reply *GetServerIdRsp) (err error) {
-	// TODO: add business logics
-
-	// TODO: setting return values
-	*reply = GetServerIdRsp{}
-
-	return nil
 }
 
 // Get is server rpc method as defined
@@ -103,13 +90,6 @@ func NewXClientForGid(addr string) (client.XClient, error) {
 	return xclient, nil
 }
 
-// GetServerId is client rpc method as defined
-func (c *GidClient) GetServerId(ctx context.Context, args *GetServerIdReq) (reply *GetServerIdRsp, err error) {
-	reply = &GetServerIdRsp{}
-	err = c.xclient.Call(ctx, "GetServerId", args, reply)
-	return reply, err
-}
-
 // Get is client rpc method as defined
 func (c *GidClient) Get(ctx context.Context, args *GetReq) (reply *GetRsp, err error) {
 	reply = &GetRsp{}
@@ -141,13 +121,6 @@ func NewGidOneClient(oneclient *client.OneClient) *GidOneClient {
 }
 
 // ======================================================
-
-// GetServerId is client rpc method as defined
-func (c *GidOneClient) GetServerId(ctx context.Context, args *GetServerIdReq) (reply *GetServerIdRsp, err error) {
-	reply = &GetServerIdRsp{}
-	err = c.oneclient.Call(ctx, c.serviceName, "GetServerId", args, reply)
-	return reply, err
-}
 
 // Get is client rpc method as defined
 func (c *GidOneClient) Get(ctx context.Context, args *GetReq) (reply *GetRsp, err error) {

@@ -16,6 +16,12 @@ enum CmdId {
   Cmd_Login = 1001;
   Cmd_Logout = 1002;
   Cmd_Kick = 1003;
+
+  // msg
+  Cmd_Msg = 1101;               // S->C 服务器推送
+  Cmd_Sync = 1102;              // 同步消息，从redis缓存中获取
+  Cmd_Send = 1103;
+  Cmd_MsgAck = 1104;
 }
 
 enum ErrorCode {

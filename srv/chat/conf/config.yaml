@@ -1,0 +1,26 @@
+app:
+  name: "zim.chat"
+logger:
+  level: "debug"
+  filename: "logs/app.log"
+  maxSize: 100
+  maxBackups: 10
+  maxAge: 7
+  compress: true
+rpc:
+  addr: ""
+registry:
+  basePath: "/zoo"
+  updateInterval: 30
+  etcdAddr:
+    - "127.0.0.1:2379"
+mysql:
+  dataSource: "root:123456@tcp(127.0.0.1:3306)/zim?charset=utf8mb4&parseTime=true&loc=Local"
+  maxIdle: 10
+  maxOpen: 100
+redis:
+  addr: "127.0.0.1:6379"
+  password: "123456"
+  db: 1
+nats:
+  addr: "nats://127.0.0.1:4222"
