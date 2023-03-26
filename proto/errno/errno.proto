@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package errno;
+
+import "errdesc/errdesc.proto";
+
+enum ErrorReason {
+  option (errdesc.default_code) = 500;
+  INTERNAL_SERVER_ERROR = 0 [(errdesc.code) = 500, (errdesc.msg) = "服务器错误"];
+}

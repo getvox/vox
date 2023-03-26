@@ -1,0 +1,18 @@
+version: "v1"
+managed:
+  enabled: true
+  go_package_prefix:
+    default: github.com/iobrother/zim/gen
+    except:
+      - buf.build/googleapis/googleapis
+      - buf.build/iobrother/zoo
+plugins:
+  - name: go
+    out: gen
+    opt: paths=source_relative
+  - name: rpcx
+    out: gen
+    opt: paths=source_relative
+  - name: zoo-errno
+    out: gen
+    opt: paths=source_relative

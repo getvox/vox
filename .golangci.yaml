@@ -1,0 +1,93 @@
+run:
+  timeout: 5m
+  skip-files:
+    - _test.go
+linters:
+  disable-all: true
+  enable:
+    - bodyclose
+    - dogsled
+    - dupl
+    - durationcheck
+    - exhaustive
+    - exportloopref
+    - gofmt
+    - gofumpt
+    - goimports
+    - gomoddirectives
+    - goprintffuncname
+    - govet
+    - importas
+    - ineffassign
+    - makezero
+    - misspell
+    - nakedret
+    - nilerr
+    - noctx
+    - nolintlint
+    - prealloc
+    - predeclared
+    - revive
+    - staticcheck
+    - tparallel
+    - typecheck
+    - unconvert
+    - unparam
+    - unused
+    - whitespace
+
+    # fixme
+    # - cyclop
+    # - errcheck
+    # - errorlint
+    # - exhaustivestruct
+    # - forbidigo
+    # - forcetypeassert
+    # - gci
+    # - gochecknoglobals
+    # - gochecknoinits
+    # - gocognit
+    # - goconst
+    # - gocritic
+    # - gocyclo
+    # - godot
+    # - gosec
+    # - gosimple
+    # - ifshort
+    # - lll
+    # - nlreturn
+    # - paralleltest
+    # - scopelint
+    # - sqlclosecheck
+    # - stylecheck
+    # - thelper
+    # - wrapcheck
+
+    # unused
+    # - deadcode
+    # - depguard
+    # - goheader
+    # - gomodguard
+    # - rowserrcheck
+    # - structcheck
+    # - varcheck
+    # - wastedassign
+
+
+    # don't enable:
+    # - asciicheck
+    # - funlen
+    # - godox
+    # - goerr113
+    # - gomnd
+    # - interfacer
+    # - maligned
+    # - nestif
+    # - testpackage
+    # - wsl
+linters-settings:
+  revive:
+    rules:
+      - name: var-naming
+        severity: warning
+        disabled: true

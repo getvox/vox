@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package rpc.gid;
+
+service Gid {
+  rpc GetServerId(GetServerIdReq) returns (GetServerIdRsp) {}
+  rpc Get(GetReq) returns (GetRsp) {}
+  rpc GetBatch(GetBatchReq) returns (GetBatchRsp) {}
+}
+
+message GetServerIdReq {
+}
+
+message GetServerIdRsp {
+  string server_id = 1;
+}
+
+message GetReq {
+}
+
+message GetRsp {
+  int64 id = 1;
+}
+
+
+message GetBatchReq {
+  int32 count = 1;
+}
+
+message GetBatchRsp {
+  repeated int64 ids = 1;
+}
