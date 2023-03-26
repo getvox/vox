@@ -1,12 +1,12 @@
 app:
-  name: "zim.chat"
+  name: "zim.task"
 logger:
-  level: "debug"
-  filename: "logs/app.log"
-  maxSize: 100
-  maxBackups: 10
-  maxAge: 7
-  compress: true
+    level: "debug"
+    filename: "logs/app.log"
+    maxSize: 100
+    maxBackups: 10
+    maxAge: 7
+    compress: true
 registry:
   basePath: "/zoo"
   updateInterval: 30

@@ -27,3 +27,4 @@ srv/gid/gid
 srv/conn/conn
 srv/sess/sess
 srv/chat/chat
+srv/task/task
