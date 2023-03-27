@@ -1,11 +1,19 @@
 package server
 
 import (
+	"context"
+	"fmt"
 	"time"
 
-	"github.com/iobrother/zim/srv/conn/protocol"
+	"github.com/iobrother/zoo/core/errors"
 	"github.com/iobrother/zoo/core/log"
 	"github.com/iobrother/ztimer"
+	"google.golang.org/protobuf/proto"
+
+	"github.com/iobrother/zim/gen/errno"
+	"github.com/iobrother/zim/gen/rpc/sess"
+	"github.com/iobrother/zim/srv/conn/internal/client"
+	"github.com/iobrother/zim/srv/conn/protocol"
 )
 
 const (
@@ -123,6 +131,14 @@ func (s *Server) OnClose(c *Connection) {
 		return
 	}
 
+	if c != nil {
+		req := sess.DisconnectReq{
+			Uin:    c.Uin,
+			ConnId: c.ID,
+		}
+		_, _ = client.GetSessClient().Disconnect(context.Background(), &req)
+	}
+
 	s.GetConnManager().Remove(c)
 }
 
@@ -146,10 +162,101 @@ func (s *Server) OnMessage(p *protocol.Packet, c *Connection) {
 }
 
 func (s *Server) handleLogin(c *Connection, p *protocol.Packet) (err error) {
+	req := &protocol.LoginReq{}
+	rsp := &protocol.LoginRsp{}
+
+	defer func() {
+		// 不论登录成功与失败，均取消定时任务
+		c.TimerTask.Cancel()
+		c.TimerTask = nil
+
+		if err != nil {
+			s.responseError(c, p, err)
+		} else {
+			s.responseMessage(c, p, rsp)
+		}
+	}()
+
+	if err = proto.Unmarshal(p.Body, req); err != nil {
+		log.Error(err)
+		return errno.ErrDecodew(errno.WithDetail(err.Error()))
+	}
+
+	// TODO: validate
+	if req.Uin == "" {
+		return errno.ErrValidationw(errno.WithDetail("账号不能为空"))
+	}
+
+	log.Infof("handleLogin uin=%s platform=%s token=%s device_id=%s device_name=%s",
+		req.Uin, req.Platform, req.Token, req.DeviceId, req.DeviceName)
+
+	reqL := sess.LoginReq{
+		Uin:        req.Uin,
+		Platform:   req.Platform,
+		Server:     s.GetServerId(),
+		Token:      req.Token,
+		DeviceId:   req.DeviceId,
+		DeviceName: req.DeviceName,
+		Tag:        req.Tag,
+		IsNew:      req.IsNew,
+	}
+	rspL, err := client.GetSessClient().Login(context.Background(), &reqL)
+	if err != nil {
+		log.Error(err)
+		return
+	}
+
+	if !req.IsNew && rspL.OtherDeviceId != "" {
+		log.Infof("登录冲突 uin=%s cur_device_id=%s conflict_device_id=%s conflict_device_name=%s",
+			req.Uin, req.DeviceId, rspL.OtherDeviceId, rspL.OtherDeviceName)
+		return errno.ErrLoginConflict()
+	}
+	// 踢掉旧的连接
+	if rspL.OtherDeviceId != "" {
+		// TODO: 优化，转发给其他连接服务器
+		log.Infof("conflict device id=%s", rspL.OtherDeviceId)
+		oldConn := s.GetConnManager().Get(rspL.OtherConnId)
+		if oldConn != nil && oldConn.Conn != nil {
+			reason := fmt.Sprintf("您的账号在设备%s上登录，如果不是本人操作，您的账号可能被盗", req.DeviceName)
+			kick := &protocol.Kick{Reason: reason}
+			if b, err := proto.Marshal(kick); err == nil {
+				pp := protocol.Packet{
+					HeaderLen: p.HeaderLen,
+					Version:   p.Version,
+					Cmd:       uint32(protocol.CmdId_Cmd_Kick),
+					Seq:       0,
+					BodyLen:   uint32(len(b)),
+					Body:      b,
+				}
+
+				oldConn.WritePacket(&pp)
+			}
+			log.Infof("踢掉客户端 uin=%s conn_id=%s device_id=%s", oldConn.Uin, oldConn.ID, oldConn.DeviceId)
+			oldConn.Close()
+			s.GetConnManager().Remove(oldConn)
+		}
+	}
+
+	c.ID = rspL.ConnId
+	c.DeviceId = req.DeviceId
+	c.Uin = reqL.Uin
+	c.Platform = req.Platform
+	c.Server = s.GetServerId()
+	c.Version = int(p.Version)
+	s.GetConnManager().Add(c)
+
+	log.Infof("AUTH SUCC uin=%s", req.Uin)
 	return nil
 }
 
 func (s *Server) handleLogout(c *Connection, p *protocol.Packet) (err error) {
+	log.Infof("client %s logout", c.Uin)
+	c.WritePacket(p)
+	req := sess.LogoutReq{
+		Uin:    c.Uin,
+		ConnId: c.ID,
+	}
+	client.GetSessClient().Logout(context.Background(), &req)
 	return
 }
 
@@ -165,5 +272,34 @@ func (s *Server) handleProto(c *Connection, p *protocol.Packet) (err error) {
 }
 
 func (s *Server) handleNoop(c *Connection, p *protocol.Packet) (err error) {
+	log.Infof("client %s noop", c.Uin)
+	c.WritePacket(p)
+	req := sess.HeartbeatReq{
+		Uin:    c.Uin,
+		ConnId: c.ID,
+		Server: c.Server,
+	}
+	client.GetSessClient().Heartbeat(context.Background(), &req)
 	return
+}
+
+func (s *Server) responseError(c *Connection, p *protocol.Packet, err error) {
+	rsp := &protocol.Error{}
+	zerr := errors.FromError(err)
+	rsp.Code = zerr.Code
+	rsp.Message = zerr.Message
+	if zerr.Message == "" {
+		rsp.Message = zerr.Detail
+	}
+	b, _ := proto.Marshal(rsp)
+	p.BodyLen = uint32(len(b))
+	p.Body = b
+	_ = c.WritePacket(p)
+}
+
+func (s *Server) responseMessage(c *Connection, p *protocol.Packet, m proto.Message) {
+	b, _ := proto.Marshal(m)
+	p.BodyLen = uint32(len(b))
+	p.Body = b
+	_ = c.WritePacket(p)
 }

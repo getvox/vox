@@ -29,16 +29,15 @@ func (s *Service) Login(ctx context.Context, req *sess.LoginReq, rsp *sess.Login
 	// TODO: token验证
 	var onlines []*ConnInfo
 	if req.Tag != "" {
-		v, e := s.getOnlineOfTag(ctx, req.Uin, req.Tag)
-		if e != nil {
-			err = e
+		onlines, err = s.getOnlineOfTag(ctx, req.Uin, req.Tag)
+		if err != nil {
 			return
 		}
-		onlines = append(onlines, v...)
 	}
 
 	if len(onlines) > 0 {
 		if req.IsNew { // 在新设备上登录需要踢掉旧的连接
+			rsp.OtherConnId = onlines[0].ConnID
 			rsp.OtherDeviceId = onlines[0].DeviceId
 			rsp.OtherDeviceName = onlines[0].DeviceName
 			onlines[0].DisconnectTime = time.Now().Unix()
@@ -46,6 +45,7 @@ func (s *Service) Login(ctx context.Context, req *sess.LoginReq, rsp *sess.Login
 				return
 			}
 		} else { // 离线的过程中，已在其它设备登录，连接恢复后重连视为登录冲突
+			rsp.OtherConnId = onlines[len(onlines)-1].ConnID
 			rsp.OtherDeviceId = onlines[len(onlines)-1].DeviceId
 			rsp.OtherDeviceName = onlines[len(onlines)-1].DeviceName
 			return

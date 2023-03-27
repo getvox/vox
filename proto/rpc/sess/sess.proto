@@ -24,8 +24,9 @@ message LoginReq {
 
 message LoginRsp {
   string conn_id = 1;
-  string other_device_id = 2;
-  string other_device_name = 3;
+  string other_conn_id = 2;
+  string other_device_id = 3;
+  string other_device_name = 4;
 }
 
 message LogoutReq {

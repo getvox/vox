@@ -44,7 +44,7 @@ message LoginReq {
   string device_id = 4;
   string device_name = 5;
   string platform = 6;
-  bool reconnect = 7;
+  bool is_new = 7;
 }
 
 message LoginRsp {

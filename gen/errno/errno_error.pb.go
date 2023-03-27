@@ -53,21 +53,126 @@ func _apply(e *errors.Error, opts ...Option) {
 	}
 }
 
-func IsInternalServerError(err error) bool {
+func IsInternalServer(err error) bool {
 	e := errors.FromError(err)
 	return e.Code == 500
 }
 
-func ErrInternalServerError(detail string) *errors.Error {
+func ErrInternalServer(detail string) *errors.Error {
 	return errors.New(500, "服务器错误", detail)
 }
 
-func ErrInternalServerErrorf(format string, a ...any) *errors.Error {
+func ErrInternalServerf(format string, a ...any) *errors.Error {
 	return errors.New(500, "服务器错误", fmt.Sprintf(format, a...))
 }
 
-func ErrInternalServerErrorw(opt ...Option) *errors.Error {
-	e := errors.New(500, "服务器错误", ErrorReason_INTERNAL_SERVER_ERROR.String())
+func ErrInternalServerw(opt ...Option) *errors.Error {
+	e := errors.New(500, "服务器错误", ErrorReason_INTERNAL_SERVER.String())
+	_apply(e, opt...)
+	return e
+}
+func IsValidation(err error) bool {
+	e := errors.FromError(err)
+	return e.Code == 1001
+}
+
+func ErrValidation(message ...string) *errors.Error {
+	if len(message) > 0 {
+		return ErrValidationw(WithMessage(message[0]))
+	}
+	return ErrValidationw()
+}
+
+func ErrValidationf(format string, a ...any) *errors.Error {
+	return ErrValidationw(WithMessage(fmt.Sprintf(format, a...)))
+}
+
+func ErrValidationw(opt ...Option) *errors.Error {
+	e := errors.New(1001, "校验错误", ErrorReason_VALIDATION.String())
+	_apply(e, opt...)
+	return e
+}
+func IsEncode(err error) bool {
+	e := errors.FromError(err)
+	return e.Code == 1002
+}
+
+func ErrEncode(message ...string) *errors.Error {
+	if len(message) > 0 {
+		return ErrEncodew(WithMessage(message[0]))
+	}
+	return ErrEncodew()
+}
+
+func ErrEncodef(format string, a ...any) *errors.Error {
+	return ErrEncodew(WithMessage(fmt.Sprintf(format, a...)))
+}
+
+func ErrEncodew(opt ...Option) *errors.Error {
+	e := errors.New(1002, "编码错误", ErrorReason_ENCODE.String())
+	_apply(e, opt...)
+	return e
+}
+func IsDecode(err error) bool {
+	e := errors.FromError(err)
+	return e.Code == 1003
+}
+
+func ErrDecode(message ...string) *errors.Error {
+	if len(message) > 0 {
+		return ErrDecodew(WithMessage(message[0]))
+	}
+	return ErrDecodew()
+}
+
+func ErrDecodef(format string, a ...any) *errors.Error {
+	return ErrDecodew(WithMessage(fmt.Sprintf(format, a...)))
+}
+
+func ErrDecodew(opt ...Option) *errors.Error {
+	e := errors.New(1003, "解码错误", ErrorReason_DECODE.String())
+	_apply(e, opt...)
+	return e
+}
+func IsDatabase(err error) bool {
+	e := errors.FromError(err)
+	return e.Code == 1004
+}
+
+func ErrDatabase(message ...string) *errors.Error {
+	if len(message) > 0 {
+		return ErrDatabasew(WithMessage(message[0]))
+	}
+	return ErrDatabasew()
+}
+
+func ErrDatabasef(format string, a ...any) *errors.Error {
+	return ErrDatabasew(WithMessage(fmt.Sprintf(format, a...)))
+}
+
+func ErrDatabasew(opt ...Option) *errors.Error {
+	e := errors.New(1004, "数据库错误", ErrorReason_DATABASE.String())
+	_apply(e, opt...)
+	return e
+}
+func IsLoginConflict(err error) bool {
+	e := errors.FromError(err)
+	return e.Code == 100001
+}
+
+func ErrLoginConflict(message ...string) *errors.Error {
+	if len(message) > 0 {
+		return ErrLoginConflictw(WithMessage(message[0]))
+	}
+	return ErrLoginConflictw()
+}
+
+func ErrLoginConflictf(format string, a ...any) *errors.Error {
+	return ErrLoginConflictw(WithMessage(fmt.Sprintf(format, a...)))
+}
+
+func ErrLoginConflictw(opt ...Option) *errors.Error {
+	e := errors.New(100001, "登录冲突", ErrorReason_LOGIN_CONFLICT.String())
 	_apply(e, opt...)
 	return e
 }
