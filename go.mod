@@ -3,6 +3,8 @@ module github.com/iobrother/zim
 go 1.20
 
 require (
+	github.com/gin-contrib/cors v1.4.0
+	github.com/gin-gonic/gin v1.9.0
 	github.com/gobwas/ws v1.1.0
 	github.com/google/uuid v1.3.0
 	github.com/iobrother/zoo v0.0.0-20230322053837-54c202a7738d
@@ -13,6 +15,7 @@ require (
 	github.com/smallnest/rpcx v1.8.6
 	github.com/spf13/cast v1.5.0
 	go.uber.org/zap v1.24.0
+	google.golang.org/genproto v0.0.0-20221227171554-f9683d7f8bef
 	google.golang.org/protobuf v1.30.0
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 	gorm.io/driver/mysql v1.4.7
@@ -37,7 +40,6 @@ require (
 	github.com/fatih/color v1.14.1 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
-	github.com/gin-gonic/gin v1.9.0 // indirect
 	github.com/go-logr/logr v1.2.3 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-ping/ping v1.1.0 // indirect
@@ -128,7 +130,6 @@ require (
 	golang.org/x/sys v0.6.0 // indirect
 	golang.org/x/text v0.8.0 // indirect
 	golang.org/x/tools v0.7.0 // indirect
-	google.golang.org/genproto v0.0.0-20221227171554-f9683d7f8bef // indirect
 	google.golang.org/grpc v1.52.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect

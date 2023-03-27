@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package http.rest.chat;
+
+import "google/api/annotations.proto";
+
+service Im {
+  rpc Send(SendReq) returns (SendRsp) {
+    option (google.api.http) = {
+      post: "/zim/send",
+      body: "*"
+    };
+  }
+}
+
+message SendReq {
+  int32 conv_type = 1;
+  int32 msg_type = 2;
+  string sender = 3;
+  string target = 4;
+  string content = 5;
+  bool is_transparent = 6;
+}
+
+message SendRsp {
+  int64 id = 1;
+  int64 send_time = 2;
+}

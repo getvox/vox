@@ -1,6 +1,7 @@
 version: v1
 deps:
   - buf.build/iobrother/zoo
+  - buf.build/googleapis/googleapis
 breaking:
   use:
     - FILE
