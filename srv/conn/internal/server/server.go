@@ -57,6 +57,9 @@ func (s *Server) registerCmdFunc() {
 	s.mapCmdFunc = make(map[protocol.CmdId]CmdFunc)
 	s.mapCmdFunc[protocol.CmdId_Cmd_Noop] = s.handleNoop
 	s.mapCmdFunc[protocol.CmdId_Cmd_Logout] = s.handleLogout
+	s.mapCmdFunc[protocol.CmdId_Cmd_Send] = s.handleSend
+	s.mapCmdFunc[protocol.CmdId_Cmd_Sync] = s.handleSync
+	s.mapCmdFunc[protocol.CmdId_Cmd_MsgAck] = s.handleMsgAck
 }
 
 func (s *Server) GetConnManager() *ConnManager {
