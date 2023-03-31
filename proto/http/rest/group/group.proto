@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package http.rest.group;
+
+import "google/api/annotations.proto";
+
+service Group {
+  rpc Create(CreateReq) returns (CreateRsp) {
+    option (google.api.http) = {
+      post: "/zim/groups",
+      body: "*"
+    };
+  }
+  rpc Add(AddReq) returns (AddRsp) {
+    option (google.api.http) = {
+      post: "/zim/groups/{group_id}/members",
+      body: "*"
+    };
+  }
+}
+
+message CreateReq {
+  // 群主
+  string owner = 1;
+  // 成员
+  repeated string members = 2;
+  // 群名称
+  string name = 3;
+  // 群ID，如果不传，zim会生成一个群ID
+  string group_id = 4;
+  string notice = 5;
+  string intro = 6;
+  string avatar = 7;
+}
+
+message CreateRsp {
+  // 群ID
+  string group_id = 1;
+  // 其他字段
+}
+
+message AddReq {
+  string group_id = 1;
+  repeated string members = 2;
+}
+
+message AddRsp {
+
+}

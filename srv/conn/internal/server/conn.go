@@ -22,6 +22,7 @@ type Connection struct {
 	Platform    string
 	Server      string
 	IsWebsocket bool
+	WsCodec     *wsCodec
 }
 
 func (c *Connection) Write(data []byte) error {

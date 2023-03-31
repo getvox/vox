@@ -5,9 +5,13 @@ import (
 	"github.com/iobrother/zoo/core/transport/rpc/client"
 
 	"github.com/iobrother/zim/gen/rpc/chat"
+	"github.com/iobrother/zim/gen/rpc/group"
 )
 
-var chatClient *chat.ChatClient
+var (
+	chatClient  *chat.ChatClient
+	groupClient *group.GroupClient
+)
 
 type Registry struct {
 	BasePath string
@@ -30,4 +34,22 @@ func GetChatClient() *chat.ChatClient {
 	}
 
 	return chatClient
+}
+
+func GetGroupClient() *group.GroupClient {
+	if groupClient == nil {
+		r := &Registry{}
+		config.Scan("registry", &r)
+
+		// TODO: 优化
+		cc, _ := client.NewClient(
+			client.WithServiceName("Group"),
+			client.BasePath(r.BasePath),
+			client.EtcdAddr(r.EtcdAddr),
+		)
+		cli := cc.GetXClient()
+		groupClient = group.NewGroupClient(cli)
+	}
+
+	return groupClient
 }

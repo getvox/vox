@@ -16,18 +16,16 @@ import (
 
 type WsServer struct {
 	gnet.BuiltinEventEngine
-	eng   gnet.Engine
-	addr  string
-	codec *wsCodec
-	srv   *Server
+	eng  gnet.Engine
+	addr string
+	srv  *Server
 }
 
 func NewWsServer(srv *Server, addr string) *WsServer {
-	ws := new(WsServer)
-	ws.addr = addr
-	ws.codec = &wsCodec{}
-	ws.srv = srv
-	return ws
+	return &WsServer{
+		addr: addr,
+		srv:  srv,
+	}
 }
 
 func (ws *WsServer) Start() error {
@@ -50,6 +48,7 @@ func (ws *WsServer) OnOpen(c gnet.Conn) (out []byte, action gnet.Action) {
 		Status:      Authing,
 		Conn:        c,
 		IsWebsocket: true,
+		WsCodec:     &wsCodec{},
 	}
 	c.SetContext(conn)
 	ws.srv.OnOpen(conn)
@@ -74,17 +73,17 @@ func (ws *WsServer) OnTraffic(c gnet.Conn) (action gnet.Action) {
 		return
 	}
 
-	if ws.codec.readBufferBytes(c) == gnet.Close {
+	if conn.WsCodec.readBufferBytes(c) == gnet.Close {
 		return gnet.Close
 	}
-	ok, action = ws.codec.upgrade(c)
+	ok, action = conn.WsCodec.upgrade(c)
 	if !ok {
 		return
 	}
-	if ws.codec.buf.Len() <= 0 {
+	if conn.WsCodec.buf.Len() <= 0 {
 		return gnet.None
 	}
-	messages, err := ws.codec.Decode(c)
+	messages, err := conn.WsCodec.Decode(c)
 	if err != nil {
 		return gnet.Close
 	}

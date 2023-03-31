@@ -21,11 +21,11 @@ type TcpServer struct {
 }
 
 func NewTcpServer(srv *Server, addr string) *TcpServer {
-	ts := new(TcpServer)
-	ts.addr = addr
-	ts.codec = &tcpCodec{}
-	ts.srv = srv
-	return ts
+	return &TcpServer{
+		addr:  addr,
+		codec: &tcpCodec{},
+		srv:   srv,
+	}
 }
 
 func (s *TcpServer) Start() error {

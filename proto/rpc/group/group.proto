@@ -1,0 +1,155 @@
+syntax = "proto3";
+
+package rpc.group;
+
+service Group {
+  rpc Sync(SyncReq) returns (SyncRsp) {}
+  rpc Create(CreateReq) returns (CreateRsp) {}
+  rpc GetJoinedGroupList(GetJoinedGroupListReq) returns (GetJoinedGroupListRsp) {}
+  rpc JoinGroup(JoinGroupReq) returns (JoinGroupRsp) {}
+  rpc InviteUserToGroup(InviteUserToGroupReq) returns (InviteUserToGroupRsp) {}
+  rpc QuitGroup(QuitGroupReq) returns (QuitGroupRsp) {}
+  rpc KickGroupMember(KickGroupMemberReq) returns (KickGroupMemberRsp) {}
+  rpc DismissGroup(DismissGroupReq) returns (DismissGroupRsp) {}
+
+  rpc GetGroupMemberList(GetGroupMemberListReq) returns (GetGroupMemberListRsp) {}
+  rpc GetGroupMemberInfo(GetGroupMemberInfoReq) returns (GetGroupMemberInfoRsp) {}
+  rpc SetGroupMemberInfo(SetGroupMemberInfoReq) returns (SetGroupMemberInfoRsp) {}
+}
+
+message GroupInfo {
+  // 群主
+  string owner = 1;
+  // 群名称
+  string name = 2;
+  string group_id = 3;
+  string notice = 4;
+  string intro = 5;
+  string avatar = 6;
+  int64 created_at = 7;
+  int64 updated_at = 8;
+  int32 type = 9;
+}
+
+message CreateReq {
+  // 群主
+  string owner = 1;
+  // 成员
+  repeated string members = 2;
+  // 群名称
+  string name = 3;
+  // 群ID，如果不传，zim会生成一个群ID
+  string group_id = 4;
+  string notice = 5;
+  string intro = 6;
+  string avatar = 7;
+}
+
+message CreateRsp {
+  // 群ID
+  string group_id = 1;
+}
+
+message GetJoinedGroupListReq {
+  string uin = 1;
+}
+
+message GetJoinedGroupListRsp {
+  repeated GroupInfo list = 1;
+}
+
+message SyncReq {
+  string uin = 1;
+  int64 offset = 2;
+  int64 limit = 3;
+}
+
+message SyncRsp {
+  repeated GroupInfo list = 1;
+}
+
+message JoinGroupReq {
+  string uin = 1;
+  string group_id = 2;
+}
+
+message JoinGroupRsp {
+}
+
+message InviteUserToGroupReq {
+  string uin = 1;
+  string group_id = 2;
+  repeated string user_list = 3;
+}
+
+message InviteUserToGroupRsp {
+  // TODO
+}
+
+message QuitGroupReq {
+  string uin = 1;
+  string group_id = 2;
+}
+
+message QuitGroupRsp {
+}
+
+message KickGroupMemberReq {
+  string uin = 1;
+  string group_id = 2;
+  repeated string user_list = 3;
+}
+
+message KickGroupMemberRsp {
+  // TODO
+}
+
+message DismissGroupReq {
+  string uin = 1;
+  string group_id = 2;
+}
+
+message DismissGroupRsp {
+}
+
+message GroupMemberInfo {
+  string group_id = 1;
+  string member = 2;
+  string nickname = 3;
+  int64 created_at = 4;
+  int64 updated_at = 5;
+}
+
+message GetGroupMemberListReq {
+  string uin = 1;
+  string group_id = 2;
+  int64 offset = 3;
+  int64 limit = 4;
+}
+
+message GetGroupMemberListRsp {
+  repeated GroupMemberInfo list = 1;
+}
+
+message GetGroupMemberInfoReq {
+  string group_id = 1;
+  string member = 2;
+}
+
+message GetGroupMemberInfoRsp {
+  string group_id = 1;
+  string member = 2;
+  string nickname = 3;
+  int64 created_at = 4;
+  int64 updated_at = 5;
+}
+
+message SetGroupMemberInfoReq {
+  string group_id = 1;
+  string member = 2;
+  string nickname = 3;
+}
+
+message SetGroupMemberInfoRsp {
+
+}

@@ -19,16 +19,16 @@ func GetGidClient() *gid.GidClient {
 	if gidClient == nil {
 		r := &Registry{}
 		if err := config.Scan("registry", &r); err != nil {
-			log.Errorf("getSessClient error=%v", err)
+			log.Errorf("GetGidClient error=%v", err)
 			return nil
 		}
 		cc, err := client.NewClient(
-			client.WithServiceName("Sess"),
+			client.WithServiceName("Gid"),
 			client.BasePath(r.BasePath),
 			client.EtcdAddr(r.EtcdAddr),
 		)
 		if err != nil {
-			log.Errorf("getSessClient error=%v", err)
+			log.Errorf("GetGidClient error=%v", err)
 			return nil
 		}
 		cli := cc.GetXClient()
