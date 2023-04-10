@@ -5,7 +5,7 @@ go 1.20
 require (
 	github.com/gin-contrib/cors v1.4.0
 	github.com/gin-gonic/gin v1.9.0
-	github.com/gobwas/ws v1.1.0
+	github.com/gobwas/ws v1.2.0
 	github.com/google/uuid v1.3.0
 	github.com/iobrother/zoo v0.0.0-20230322053837-54c202a7738d
 	github.com/iobrother/ztimer v0.0.0-20220419030337-03883ba1194e
@@ -47,7 +47,6 @@ require (
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-playground/validator/v10 v10.11.2 // indirect
-	github.com/go-resty/resty/v2 v2.7.0 // indirect
 	github.com/go-sql-driver/mysql v1.7.0 // indirect
 	github.com/go-task/slim-sprig v0.0.0-20210107165309-348f09dbbbc0 // indirect
 	github.com/gobwas/httphead v0.1.0 // indirect
