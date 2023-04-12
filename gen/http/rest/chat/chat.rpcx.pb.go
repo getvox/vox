@@ -19,7 +19,7 @@ var _ = server.NewServer
 var _ = client.NewClient
 var _ = protocol.NewMessage
 
-// ================== interface skeleton ===================
+//================== interface skeleton ===================
 type ImAble interface {
 	// ImAble can be used for interface verification.
 
@@ -27,7 +27,7 @@ type ImAble interface {
 	Send(ctx context.Context, args *SendReq, reply *SendRsp) (err error)
 }
 
-// ================== server skeleton ===================
+//================== server skeleton ===================
 type ImImpl struct{}
 
 // ServeForIm starts a server only registers one service.

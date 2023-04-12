@@ -4,8 +4,8 @@ deps:
   - remote: buf.build
     owner: googleapis
     repository: googleapis
-    commit: 463926e7ee924d46ad0a726e1cf4eacd
+    commit: 5ae7f88519b04fe1965da0f8a375a088
   - remote: buf.build
     owner: iobrother
     repository: zoo
-    commit: b487fa650a0f49a2ad4a3462516a2946
+    commit: beccdb1cb1844275956d04bd801530e3

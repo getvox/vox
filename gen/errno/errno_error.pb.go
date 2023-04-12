@@ -53,24 +53,6 @@ func _apply(e *errors.Error, opts ...Option) {
 	}
 }
 
-func IsInternalServer(err error) bool {
-	e := errors.FromError(err)
-	return e.Code == 500
-}
-
-func ErrInternalServer(detail string) *errors.Error {
-	return errors.New(500, "服务器错误", detail)
-}
-
-func ErrInternalServerf(format string, a ...any) *errors.Error {
-	return errors.New(500, "服务器错误", fmt.Sprintf(format, a...))
-}
-
-func ErrInternalServerw(opt ...Option) *errors.Error {
-	e := errors.New(500, "服务器错误", ErrorReason_INTERNAL_SERVER.String())
-	_apply(e, opt...)
-	return e
-}
 func IsValidation(err error) bool {
 	e := errors.FromError(err)
 	return e.Code == 1001
@@ -88,7 +70,7 @@ func ErrValidationf(format string, a ...any) *errors.Error {
 }
 
 func ErrValidationw(opt ...Option) *errors.Error {
-	e := errors.New(1001, "校验错误", ErrorReason_VALIDATION.String())
+	e := errors.NewWithStatusCode(500, 1001, "校验错误", ErrorReason_VALIDATION.String())
 	_apply(e, opt...)
 	return e
 }
@@ -109,7 +91,7 @@ func ErrEncodef(format string, a ...any) *errors.Error {
 }
 
 func ErrEncodew(opt ...Option) *errors.Error {
-	e := errors.New(1002, "编码错误", ErrorReason_ENCODE.String())
+	e := errors.NewWithStatusCode(500, 1002, "编码错误", ErrorReason_ENCODE.String())
 	_apply(e, opt...)
 	return e
 }
@@ -130,7 +112,7 @@ func ErrDecodef(format string, a ...any) *errors.Error {
 }
 
 func ErrDecodew(opt ...Option) *errors.Error {
-	e := errors.New(1003, "解码错误", ErrorReason_DECODE.String())
+	e := errors.NewWithStatusCode(500, 1003, "解码错误", ErrorReason_DECODE.String())
 	_apply(e, opt...)
 	return e
 }
@@ -151,7 +133,7 @@ func ErrDatabasef(format string, a ...any) *errors.Error {
 }
 
 func ErrDatabasew(opt ...Option) *errors.Error {
-	e := errors.New(1004, "数据库错误", ErrorReason_DATABASE.String())
+	e := errors.NewWithStatusCode(500, 1004, "数据库错误", ErrorReason_DATABASE.String())
 	_apply(e, opt...)
 	return e
 }
@@ -172,7 +154,7 @@ func ErrLoginConflictf(format string, a ...any) *errors.Error {
 }
 
 func ErrLoginConflictw(opt ...Option) *errors.Error {
-	e := errors.New(100001, "登录冲突", ErrorReason_LOGIN_CONFLICT.String())
+	e := errors.NewWithStatusCode(500, 100001, "登录冲突", ErrorReason_LOGIN_CONFLICT.String())
 	_apply(e, opt...)
 	return e
 }

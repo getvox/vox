@@ -19,7 +19,7 @@ var _ = server.NewServer
 var _ = client.NewClient
 var _ = protocol.NewMessage
 
-// ================== interface skeleton ===================
+//================== interface skeleton ===================
 type GroupAble interface {
 	// GroupAble can be used for interface verification.
 
@@ -30,7 +30,7 @@ type GroupAble interface {
 	Add(ctx context.Context, args *AddReq, reply *AddRsp) (err error)
 }
 
-// ================== server skeleton ===================
+//================== server skeleton ===================
 type GroupImpl struct{}
 
 // ServeForGroup starts a server only registers one service.

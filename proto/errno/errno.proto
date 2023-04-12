@@ -5,12 +5,11 @@ package errno;
 import "errdesc/errdesc.proto";
 
 enum ErrorReason {
-  option (errdesc.default_code) = 500;
-  INTERNAL_SERVER = 0 [(errdesc.code) = 500, (errdesc.msg) = "服务器错误"];
-  VALIDATION = 1 [(errdesc.code) = 1001, (errdesc.msg) = "校验错误"];
-  ENCODE = 2 [(errdesc.code) = 1002, (errdesc.msg) = "编码错误"];
-  DECODE = 3 [(errdesc.code) = 1003, (errdesc.msg) = "解码错误"];
-  DATABASE = 4 [(errdesc.code) = 1004, (errdesc.msg) = "数据库错误"];
+  option (errdesc.default_status_code) = 500;
+  VALIDATION = 0 [(errdesc.code) = 1001, (errdesc.msg) = "校验错误"];
+  ENCODE = 1 [(errdesc.code) = 1002, (errdesc.msg) = "编码错误"];
+  DECODE = 2 [(errdesc.code) = 1003, (errdesc.msg) = "解码错误"];
+  DATABASE = 3 [(errdesc.code) = 1004, (errdesc.msg) = "数据库错误"];
 
   LOGIN_CONFLICT = 100 [(errdesc.code) = 100001, (errdesc.msg) = "登录冲突"];
 }
