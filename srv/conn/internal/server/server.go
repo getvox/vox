@@ -8,10 +8,13 @@ import (
 	"github.com/iobrother/zoo/core/errors"
 	"github.com/iobrother/zoo/core/log"
 	"github.com/iobrother/ztimer"
+	"github.com/nats-io/nats.go"
 	"google.golang.org/protobuf/proto"
 
 	"github.com/iobrother/zim/gen/errno"
+	"github.com/iobrother/zim/gen/rpc/common"
 	"github.com/iobrother/zim/gen/rpc/sess"
+	"github.com/iobrother/zim/pkg/runtime"
 	"github.com/iobrother/zim/srv/conn/internal/client"
 	"github.com/iobrother/zim/srv/conn/protocol"
 )
@@ -84,6 +87,11 @@ func (s *Server) GetTimer() *ztimer.Timer {
 
 func (s *Server) Start() error {
 	go func() {
+		if err := s.consumePush(); err != nil {
+			log.Error(err)
+		}
+	}()
+	go func() {
 		s.timer.Start()
 	}()
 	go func() {
@@ -117,6 +125,39 @@ func (s *Server) Stop() error {
 		}
 	}
 	return lastError
+}
+
+func (s *Server) consumePush() error {
+	// process push message
+	pushMsg := new(common.PushMsg)
+	topic := fmt.Sprintf("push.online.%s", s.GetServerId())
+	nc := runtime.GetNC()
+	if _, err := nc.Subscribe(topic, func(msg *nats.Msg) {
+		if err := proto.Unmarshal(msg.Data, pushMsg); err != nil {
+			log.Errorf("proto.Unmarshal error=(%v)", err)
+			return
+		}
+
+		log.Infof("receive a message")
+		for _, id := range pushMsg.Conns {
+			if c := s.GetConnManager().Get(id); c != nil {
+				if c.Conn != nil {
+					p := protocol.Packet{
+						HeaderLen: 20,
+						Version:   uint32(c.Version),
+						Cmd:       uint32(protocol.CmdId_Cmd_Msg),
+						Seq:       0,
+						BodyLen:   uint32(len(pushMsg.Msg)),
+						Body:      pushMsg.Msg,
+					}
+					_ = c.WritePacket(&p)
+				}
+			}
+		}
+	}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *Server) OnOpen(c *Connection) {
