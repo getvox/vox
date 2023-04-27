@@ -10,7 +10,7 @@ require (
 	github.com/iobrother/zoo v0.0.0-20230412085007-5e24345d4411
 	github.com/iobrother/ztimer v0.0.0-20220419030337-03883ba1194e
 	github.com/nats-io/nats.go v1.25.0
-	github.com/panjf2000/gnet/v2 v2.2.6
+	github.com/panjf2000/gnet/v2 v2.2.7
 	github.com/redis/go-redis/v9 v9.0.3
 	github.com/smallnest/rpcx v1.8.6
 	github.com/spf13/cast v1.5.0
