@@ -11,7 +11,7 @@ require (
 	github.com/iobrother/ztimer v0.0.0-20220419030337-03883ba1194e
 	github.com/nats-io/nats.go v1.25.0
 	github.com/panjf2000/gnet/v2 v2.2.6
-	github.com/redis/go-redis/v9 v9.0.3
+	github.com/redis/go-redis/v9 v9.0.4
 	github.com/smallnest/rpcx v1.8.6
 	github.com/spf13/cast v1.5.0
 	go.uber.org/zap v1.24.0
