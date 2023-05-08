@@ -12,7 +12,6 @@ import (
 	"google.golang.org/protobuf/proto"
 
 	"github.com/iobrother/zim/gen/rpc/chat"
-	"github.com/iobrother/zim/gen/rpc/common"
 	"github.com/iobrother/zim/gen/rpc/gid"
 	"github.com/iobrother/zim/pkg/constant"
 	"github.com/iobrother/zim/pkg/runtime"
@@ -30,17 +29,16 @@ func GetChatService() *Chat {
 func (l *Chat) SendMsg(ctx context.Context, req *chat.SendReq, rsp *chat.SendRsp) (err error) {
 	log.Infof("Chat SendMsg ConvType=%d Type=%d Content=%s", req.ConvType, req.MsgType, req.Content)
 	now := time.Now().UnixMilli()
-	m := common.Msg{
+	m := chat.Msg{
 		Id:            0,
 		ConvType:      req.ConvType,
 		Type:          req.MsgType,
 		Content:       req.Content,
-		Sender:        req.Sender,
-		Target:        req.Target,
+		From:          req.From,
+		To:            req.To,
 		SendTime:      now,
-		ClientUuid:    req.ClientUuid,
+		Uuid:          req.Uuid,
 		AtUserList:    req.AtUserList,
-		Owner:         "",
 		IsTransparent: req.IsTransparent,
 	}
 
@@ -68,7 +66,7 @@ func (l *Chat) SendMsg(ctx context.Context, req *chat.SendReq, rsp *chat.SendRsp
 
 	rsp.Id = m.Id
 	rsp.SendTime = m.SendTime
-	rsp.ClientUuid = m.ClientUuid
+	rsp.ClientUuid = m.Uuid
 
 	return nil
 }
@@ -120,7 +118,7 @@ func (l *Chat) SyncMsg(ctx context.Context, req *chat.SyncMsgReq, rsp *chat.Sync
 		if v == nil {
 			continue
 		}
-		msg := common.Msg{}
+		msg := chat.Msg{}
 		if err := json.Unmarshal([]byte(v.(string)), &msg); err != nil {
 			continue
 		}

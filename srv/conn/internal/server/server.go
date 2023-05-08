@@ -12,7 +12,7 @@ import (
 	"google.golang.org/protobuf/proto"
 
 	"github.com/iobrother/zim/gen/errno"
-	"github.com/iobrother/zim/gen/rpc/common"
+	"github.com/iobrother/zim/gen/queue"
 	"github.com/iobrother/zim/gen/rpc/sess"
 	"github.com/iobrother/zim/pkg/runtime"
 	"github.com/iobrother/zim/srv/conn/internal/client"
@@ -129,7 +129,7 @@ func (s *Server) Stop() error {
 
 func (s *Server) consumePush() error {
 	// process push message
-	pushMsg := new(common.PushMsg)
+	pushMsg := new(queue.PushMsg)
 	topic := fmt.Sprintf("push.online.%s", s.GetServerId())
 	nc := runtime.GetNC()
 	if _, err := nc.Subscribe(topic, func(msg *nats.Msg) {

@@ -32,10 +32,10 @@ func (s *Server) handleSend(c *Connection, p *protocol.Packet) (err error) {
 	r := chat.SendReq{
 		ConvType:      req.ConvType,
 		MsgType:       req.MsgType,
-		Sender:        req.Sender,
-		Target:        req.Target,
+		From:          req.From,
+		To:            req.To,
 		Content:       req.Content,
-		ClientUuid:    req.ClientUuid,
+		Uuid:          req.Uuid,
 		AtUserList:    req.AtUserList,
 		IsTransparent: req.IsTransparent,
 	}
@@ -47,7 +47,7 @@ func (s *Server) handleSend(c *Connection, p *protocol.Packet) (err error) {
 
 	rsp.Id = rspL.Id
 	rsp.SendTime = rspL.SendTime
-	rsp.ClientUuid = r.ClientUuid
+	rsp.Uuid = r.Uuid
 	return nil
 }
 
@@ -115,10 +115,10 @@ func (s *Server) handleSync(c *Connection, p *protocol.Packet) (err error) {
 			ConvType:   v.ConvType,
 			Type:       v.Type,
 			Content:    v.Content,
-			Sender:     v.Sender,
-			Target:     v.Target,
+			From:       v.From,
+			To:         v.To,
 			SendTime:   v.SendTime,
-			ClientUuid: v.ClientUuid,
+			Uuid:       v.Uuid,
 			AtUserList: v.AtUserList,
 		}
 		rsp.List = append(rsp.List, msg)

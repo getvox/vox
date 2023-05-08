@@ -27,11 +27,11 @@ func (s *Service) Send(ctx context.Context, req *chat.SendReq) (rsp *chat.SendRs
 	reqL := pb.SendReq{
 		ConvType:      req.ConvType,
 		MsgType:       req.MsgType,
-		Sender:        req.Sender,
-		Target:        req.Target,
+		From:          req.From,
+		To:            req.To,
 		Content:       req.Content,
 		AtUserList:    nil,
-		ClientUuid:    "",
+		Uuid:          "",
 		IsTransparent: req.IsTransparent,
 	}
 

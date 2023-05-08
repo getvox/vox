@@ -72,10 +72,10 @@ message Msg {
   int32 conv_type = 2;
   int32 type = 3;
   string content = 4;
-  string sender = 5;
-  string target = 6;
+  string from = 5;
+  string to = 6;
   int64 send_time = 7;
-  string client_uuid = 8;
+  string uuid = 8;
   repeated string at_user_list = 9;
   string owner = 10;
   bool is_transparent = 11;
@@ -94,10 +94,10 @@ message SyncMsgRsp {
 message SendReq {
   int32 conv_type = 1;
   int32 msg_type = 2;
-  string sender = 3;
-  string target = 4;
+  string from = 3;
+  string to = 4;
   string content = 5;
-  string client_uuid = 6;
+  string uuid = 6;
   repeated string at_user_list = 7;
   bool is_transparent = 8;
 }
@@ -105,7 +105,7 @@ message SendReq {
 message SendRsp {
   int64 id = 1;
   int64 send_time = 2;
-  string client_uuid = 3;
+  string uuid = 3;
 }
 
 message MsgAckReq {

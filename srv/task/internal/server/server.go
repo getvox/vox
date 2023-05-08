@@ -12,7 +12,7 @@ import (
 	"github.com/redis/go-redis/v9"
 	"google.golang.org/protobuf/proto"
 
-	"github.com/iobrother/zim/gen/rpc/common"
+	"github.com/iobrother/zim/gen/queue"
 	"github.com/iobrother/zim/gen/rpc/sess"
 	"github.com/iobrother/zim/pkg/constant"
 	"github.com/iobrother/zim/pkg/runtime"
@@ -56,7 +56,7 @@ func (s *Server) consumeTodo() {
 			log.Error(err.Error())
 		} else {
 			for _, m := range msgs {
-				msg := common.Msg{}
+				msg := queue.Msg{}
 				if err := proto.Unmarshal(m.Data, &msg); err != nil {
 					m.Ack()
 					continue
@@ -70,7 +70,7 @@ func (s *Server) consumeTodo() {
 	}
 }
 
-func (s *Server) onTodo(m *common.Msg) error {
+func (s *Server) onTodo(m *queue.Msg) error {
 	if err := s.storeRedis(m); err != nil {
 		return err
 	}
@@ -80,7 +80,7 @@ func (s *Server) onTodo(m *common.Msg) error {
 	return nil
 }
 
-func (s *Server) storeRedis(m *common.Msg) error {
+func (s *Server) storeRedis(m *queue.Msg) error {
 	if m.IsTransparent {
 		return nil
 	}
@@ -98,11 +98,11 @@ func (s *Server) storeRedis(m *common.Msg) error {
 	// TODO: context
 	ctx := context.Background()
 	if _, err := rc.TxPipelined(ctx, func(pipe redis.Pipeliner) error {
-		key := util.KeyMsgSync(m.Owner)
+		key := util.KeyMsgSync(m.InboxUser)
 		pipe.ZAdd(ctx, key, member)
 		pipe.Expire(ctx, key, time.Duration(constant.MsgKeepDays*24)*time.Hour)
 
-		key = util.KeyMsg(m.Owner, m.Id)
+		key = util.KeyMsg(m.InboxUser, m.Id)
 		pipe.SetEx(ctx, key, string(b), time.Duration(constant.MsgKeepDays*24)*time.Hour)
 
 		return nil
@@ -112,19 +112,19 @@ func (s *Server) storeRedis(m *common.Msg) error {
 	return nil
 }
 
-func (s *Server) push(m *common.Msg) {
+func (s *Server) push(m *queue.Msg) {
 	// 获取在线状态
 	sessClient := client.GetSessClient()
 	if sessClient != nil {
-		log.Infof("Uin=%s", m.Owner)
-		req := sess.GetOnlineReq{Uin: m.Owner}
+		log.Infof("Uin=%s", m.InboxUser)
+		req := sess.GetOnlineReq{Uin: m.InboxUser}
 		rsp, err := sessClient.GetOnline(context.Background(), &req)
 		if err != nil {
 			log.Error(err)
 			return
 		}
 
-		m.Owner = ""
+		m.InboxUser = ""
 		b, err := proto.Marshal(m)
 		if err != nil {
 			log.Error(err)
@@ -138,7 +138,7 @@ func (s *Server) push(m *common.Msg) {
 				// 在线推送
 				var onlines []string
 				onlines = append(onlines, v.ConnId)
-				pushMsg := common.PushMsg{
+				pushMsg := queue.PushMsg{
 					Server: v.Server,
 					Conns:  onlines,
 					Msg:    b,
@@ -169,7 +169,7 @@ func (s *Server) push(m *common.Msg) {
 	}
 }
 
-func (s *Server) storeMysql(m *common.Msg) {
+func (s *Server) storeMysql(m *queue.Msg) {
 	var atUserList string
 	if len(m.AtUserList) > 0 {
 		b, _ := json.Marshal(m.AtUserList)
@@ -182,12 +182,12 @@ func (s *Server) storeMysql(m *common.Msg) {
 		ConvType:   int(m.ConvType),
 		Content:    m.Content,
 		Type:       int(m.Type),
-		Sender:     m.Sender,
-		Target:     m.Target,
+		From:       m.From,
+		To:         m.To,
 		AtUserList: atUserList,
 		ReadTime:   0,
 		SendTime:   m.SendTime,
-		ClientUuid: m.ClientUuid,
+		Uuid:       m.Uuid,
 	}
 
 	if err := db.Create(&msg).Error; err != nil {
@@ -211,7 +211,7 @@ func (s *Server) consumeNew() {
 			log.Error(err.Error())
 		} else {
 			for _, m := range msgs {
-				msg := common.Msg{}
+				msg := queue.Msg{}
 				if err := proto.Unmarshal(m.Data, &msg); err != nil {
 					log.Error(err)
 					m.Ack()
@@ -226,7 +226,7 @@ func (s *Server) consumeNew() {
 	}
 }
 
-func (s *Server) onNew(m *common.Msg) (err error) {
+func (s *Server) onNew(m *queue.Msg) (err error) {
 	if m.ConvType == constant.ConvTypeC2C {
 		err = s.onC2CMsg(m)
 	} else if m.ConvType == constant.ConvTypeGroup {
@@ -244,10 +244,10 @@ func (s *Server) onNew(m *common.Msg) (err error) {
 	return
 }
 
-func (s *Server) onC2CMsg(m *common.Msg) error {
+func (s *Server) onC2CMsg(m *queue.Msg) error {
 	js := runtime.GetJS()
-	if m.Sender != "" {
-		m.Owner = m.Sender
+	if m.From != "" {
+		m.InboxUser = m.From
 		b, err := proto.Marshal(m)
 		if err != nil {
 			return err
@@ -261,8 +261,8 @@ func (s *Server) onC2CMsg(m *common.Msg) error {
 		js.PublishMsg(nm)
 	}
 
-	if m.Target != "" {
-		m.Owner = m.Target
+	if m.To != "" {
+		m.InboxUser = m.To
 		b, err := proto.Marshal(m)
 		if err != nil {
 			return err
@@ -279,10 +279,10 @@ func (s *Server) onC2CMsg(m *common.Msg) error {
 	return nil
 }
 
-func (s *Server) onGroupMsg(m *common.Msg) (err error) {
+func (s *Server) onGroupMsg(m *queue.Msg) (err error) {
 	db := runtime.GetDB()
 	var members []*model.GroupMember
-	cond := model.GroupMember{GroupId: m.Target}
+	cond := model.GroupMember{GroupId: m.To}
 	if err = db.Where(&cond).Find(&members).Error; err != nil {
 		return
 	}
@@ -292,7 +292,7 @@ func (s *Server) onGroupMsg(m *common.Msg) (err error) {
 		if v.Member == "" {
 			continue
 		}
-		m.Owner = v.Member
+		m.InboxUser = v.Member
 		b, err := proto.Marshal(m)
 		if err != nil {
 			continue

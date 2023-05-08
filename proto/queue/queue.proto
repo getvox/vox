@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package queue;
+
+message Msg {
+  int64 id = 1;
+  int32 conv_type = 2;
+  int32 type = 3;
+  string content = 4;
+  string from = 5;
+  string to = 6;
+  int64 send_time = 7;
+  string uuid = 8;
+  repeated string at_user_list = 9;
+  string inbox_user = 10;
+  bool is_transparent = 11;
+}
+
+message PushMsg {
+  string server = 1;
+  repeated string conns = 2;
+  bytes msg = 3;
+}
