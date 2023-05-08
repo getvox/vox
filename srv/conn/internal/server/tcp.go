@@ -5,9 +5,11 @@ import (
 	"context"
 	"encoding/binary"
 	"errors"
-	"github.com/iobrother/zim/srv/conn/protocol"
+
 	"github.com/iobrother/zoo/core/log"
 	"github.com/panjf2000/gnet/v2"
+
+	"github.com/iobrother/zim/srv/conn/protocol"
 )
 
 type TcpServer struct {
