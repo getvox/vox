@@ -8,10 +8,9 @@ import (
 
 	"github.com/gobwas/ws"
 	"github.com/gobwas/ws/wsutil"
+	"github.com/iobrother/zim/srv/conn/protocol"
 	"github.com/iobrother/zoo/core/log"
 	"github.com/panjf2000/gnet/v2"
-
-	"github.com/iobrother/zim/srv/conn/protocol"
 )
 
 type WsServer struct {
@@ -29,7 +28,7 @@ func NewWsServer(srv *Server, addr string) *WsServer {
 }
 
 func (ws *WsServer) Start() error {
-	return gnet.Run(ws, ws.addr, gnet.WithMulticore(true))
+	return gnet.Run(ws, ws.addr, gnet.WithMulticore(true), gnet.WithReusePort(true))
 }
 
 func (ws *WsServer) Stop() error {
