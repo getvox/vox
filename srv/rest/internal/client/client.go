@@ -4,8 +4,8 @@ import (
 	"github.com/iobrother/zoo/core/config"
 	"github.com/iobrother/zoo/core/transport/rpc/client"
 
-	"github.com/iobrother/zim/gen/rpc/channel"
-	"github.com/iobrother/zim/gen/rpc/chat"
+	"github.com/getvox/vox/gen/rpc/channel"
+	"github.com/getvox/vox/gen/rpc/chat"
 )
 
 var (

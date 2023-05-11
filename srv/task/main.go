@@ -3,9 +3,9 @@ package main
 import (
 	"errors"
 
-	"github.com/iobrother/zim/pkg/runtime"
-	"github.com/iobrother/zim/srv/task/internal/app"
-	"github.com/iobrother/zim/srv/task/internal/model"
+	"github.com/getvox/vox/pkg/runtime"
+	"github.com/getvox/vox/srv/task/internal/app"
+	"github.com/getvox/vox/srv/task/internal/model"
 	"github.com/iobrother/zoo/core/log"
 	"github.com/nats-io/nats.go"
 )

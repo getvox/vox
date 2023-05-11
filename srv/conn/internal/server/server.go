@@ -11,12 +11,12 @@ import (
 	"github.com/nats-io/nats.go"
 	"google.golang.org/protobuf/proto"
 
-	"github.com/iobrother/zim/gen/errno"
-	"github.com/iobrother/zim/gen/queue"
-	"github.com/iobrother/zim/gen/rpc/sess"
-	"github.com/iobrother/zim/pkg/runtime"
-	"github.com/iobrother/zim/srv/conn/internal/client"
-	"github.com/iobrother/zim/srv/conn/protocol"
+	"github.com/getvox/vox/gen/errno"
+	"github.com/getvox/vox/gen/queue"
+	"github.com/getvox/vox/gen/rpc/sess"
+	"github.com/getvox/vox/pkg/runtime"
+	"github.com/getvox/vox/srv/conn/internal/client"
+	"github.com/getvox/vox/srv/conn/protocol"
 )
 
 const (

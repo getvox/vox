@@ -5,9 +5,9 @@ import (
 	"github.com/iobrother/zoo/core/log"
 	"github.com/smallnest/rpcx/server"
 
-	"github.com/iobrother/zim/pkg/runtime"
-	"github.com/iobrother/zim/srv/chat/internal/model"
-	"github.com/iobrother/zim/srv/chat/internal/service"
+	"github.com/getvox/vox/pkg/runtime"
+	"github.com/getvox/vox/srv/chat/internal/model"
+	"github.com/getvox/vox/srv/chat/internal/service"
 )
 
 func main() {

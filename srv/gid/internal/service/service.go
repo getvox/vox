@@ -5,10 +5,10 @@ import (
 	"os"
 	"sync"
 
-	"github.com/iobrother/zim/srv/gid/internal/snowflake"
+	"github.com/getvox/vox/srv/gid/internal/snowflake"
 	"github.com/spf13/cast"
 
-	"github.com/iobrother/zim/gen/rpc/gid"
+	"github.com/getvox/vox/gen/rpc/gid"
 )
 
 type Service struct {

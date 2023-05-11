@@ -7,9 +7,9 @@ import (
 	"github.com/redis/go-redis/v9"
 	"gorm.io/gorm"
 
-	zdb "github.com/iobrother/zim/pkg/database/db"
-	zredis "github.com/iobrother/zim/pkg/database/redis"
-	znats "github.com/iobrother/zim/pkg/nats"
+	zdb "github.com/getvox/vox/pkg/database/db"
+	zredis "github.com/getvox/vox/pkg/database/redis"
+	znats "github.com/getvox/vox/pkg/nats"
 )
 
 var defaultRuntime Runtime

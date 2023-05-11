@@ -12,7 +12,7 @@ import (
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
 
-	"github.com/iobrother/zim/srv/task/internal/server"
+	"github.com/getvox/vox/srv/task/internal/server"
 )
 
 type App struct {

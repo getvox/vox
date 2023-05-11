@@ -19,7 +19,7 @@ var _ = server.NewServer
 var _ = client.NewClient
 var _ = protocol.NewMessage
 
-//================== interface skeleton ===================
+// ================== interface skeleton ===================
 type ChatAble interface {
 	// ChatAble can be used for interface verification.
 
@@ -39,7 +39,7 @@ type ChatAble interface {
 	DeleteMsg(ctx context.Context, args *DeleteMsgReq, reply *DeleteMsgRsp) (err error)
 }
 
-//================== server skeleton ===================
+// ================== server skeleton ===================
 type ChatImpl struct{}
 
 // ServeForChat starts a server only registers one service.

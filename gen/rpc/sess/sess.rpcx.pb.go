@@ -19,7 +19,7 @@ var _ = server.NewServer
 var _ = client.NewClient
 var _ = protocol.NewMessage
 
-//================== interface skeleton ===================
+// ================== interface skeleton ===================
 type SessAble interface {
 	// SessAble can be used for interface verification.
 
@@ -39,7 +39,7 @@ type SessAble interface {
 	GetOnline(ctx context.Context, args *GetOnlineReq, reply *GetOnlineRsp) (err error)
 }
 
-//================== server skeleton ===================
+// ================== server skeleton ===================
 type SessImpl struct{}
 
 // ServeForSess starts a server only registers one service.

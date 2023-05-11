@@ -4,9 +4,9 @@ import (
 	"context"
 	"sync"
 
-	"github.com/iobrother/zim/gen/http/rest/channel"
-	pb "github.com/iobrother/zim/gen/rpc/channel"
-	"github.com/iobrother/zim/srv/rest/internal/client"
+	"github.com/getvox/vox/gen/http/rest/channel"
+	pb "github.com/getvox/vox/gen/rpc/channel"
+	"github.com/getvox/vox/srv/rest/internal/client"
 )
 
 type Service struct{}

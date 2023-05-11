@@ -5,7 +5,7 @@ import (
 	"github.com/iobrother/zoo/core/log"
 	"github.com/iobrother/zoo/core/transport/rpc/client"
 
-	"github.com/iobrother/zim/gen/rpc/sess"
+	"github.com/getvox/vox/gen/rpc/sess"
 )
 
 var sessClient *sess.SessClient

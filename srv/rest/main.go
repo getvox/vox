@@ -5,8 +5,8 @@ import (
 	"github.com/iobrother/zoo/core/log"
 	"github.com/iobrother/zoo/core/transport/http/server"
 
-	"github.com/iobrother/zim/pkg/runtime"
-	"github.com/iobrother/zim/srv/rest/internal/router"
+	"github.com/getvox/vox/pkg/runtime"
+	"github.com/getvox/vox/srv/rest/internal/router"
 )
 
 func main() {

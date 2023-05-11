@@ -9,7 +9,7 @@ import (
 	"github.com/iobrother/zoo/core/log"
 	"github.com/panjf2000/gnet/v2"
 
-	"github.com/iobrother/zim/srv/conn/protocol"
+	"github.com/getvox/vox/srv/conn/protocol"
 )
 
 type TcpServer struct {

@@ -3,8 +3,8 @@ package main
 import (
 	"github.com/iobrother/zoo/core/log"
 
-	"github.com/iobrother/zim/pkg/runtime"
-	"github.com/iobrother/zim/srv/conn/internal/app"
+	"github.com/getvox/vox/pkg/runtime"
+	"github.com/getvox/vox/srv/conn/internal/app"
 )
 
 func main() {

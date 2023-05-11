@@ -7,8 +7,8 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/iobrother/zim/gen/rpc/sess"
-	"github.com/iobrother/zim/pkg/constant"
+	"github.com/getvox/vox/gen/rpc/sess"
+	"github.com/getvox/vox/pkg/constant"
 )
 
 type Service struct{}

@@ -19,7 +19,7 @@ var _ = server.NewServer
 var _ = client.NewClient
 var _ = protocol.NewMessage
 
-//================== interface skeleton ===================
+// ================== interface skeleton ===================
 type GidAble interface {
 	// GidAble can be used for interface verification.
 
@@ -30,7 +30,7 @@ type GidAble interface {
 	GetBatch(ctx context.Context, args *GetBatchReq, reply *GetBatchRsp) (err error)
 }
 
-//================== server skeleton ===================
+// ================== server skeleton ===================
 type GidImpl struct{}
 
 // ServeForGid starts a server only registers one service.

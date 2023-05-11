@@ -7,11 +7,11 @@ import (
 	"github.com/spf13/cast"
 	"gorm.io/gorm"
 
-	"github.com/iobrother/zim/gen/rpc/channel"
-	"github.com/iobrother/zim/gen/rpc/gid"
-	"github.com/iobrother/zim/pkg/runtime"
-	"github.com/iobrother/zim/srv/chat/internal/client"
-	"github.com/iobrother/zim/srv/chat/internal/model"
+	"github.com/getvox/vox/gen/rpc/channel"
+	"github.com/getvox/vox/gen/rpc/gid"
+	"github.com/getvox/vox/pkg/runtime"
+	"github.com/getvox/vox/srv/chat/internal/client"
+	"github.com/getvox/vox/srv/chat/internal/model"
 )
 
 type Channel struct{}

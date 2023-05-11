@@ -6,9 +6,9 @@ import (
 	"github.com/iobrother/zoo/core/log"
 	"google.golang.org/protobuf/proto"
 
-	"github.com/iobrother/zim/gen/rpc/chat"
-	"github.com/iobrother/zim/srv/conn/internal/client"
-	"github.com/iobrother/zim/srv/conn/protocol"
+	"github.com/getvox/vox/gen/rpc/chat"
+	"github.com/getvox/vox/srv/conn/internal/client"
+	"github.com/getvox/vox/srv/conn/protocol"
 )
 
 func (s *Server) handleSend(c *Connection, p *protocol.Packet) (err error) {

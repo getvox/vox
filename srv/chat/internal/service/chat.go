@@ -11,13 +11,13 @@ import (
 	"github.com/spf13/cast"
 	"google.golang.org/protobuf/proto"
 
-	"github.com/iobrother/zim/gen/rpc/chat"
-	"github.com/iobrother/zim/gen/rpc/gid"
-	"github.com/iobrother/zim/pkg/constant"
-	"github.com/iobrother/zim/pkg/runtime"
-	"github.com/iobrother/zim/pkg/util"
-	"github.com/iobrother/zim/srv/chat/internal/client"
-	"github.com/iobrother/zim/srv/chat/internal/model"
+	"github.com/getvox/vox/gen/rpc/chat"
+	"github.com/getvox/vox/gen/rpc/gid"
+	"github.com/getvox/vox/pkg/constant"
+	"github.com/getvox/vox/pkg/runtime"
+	"github.com/getvox/vox/pkg/util"
+	"github.com/getvox/vox/srv/chat/internal/client"
+	"github.com/getvox/vox/srv/chat/internal/model"
 )
 
 type Chat struct{}
