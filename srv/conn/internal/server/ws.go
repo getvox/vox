@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"io"
 
+	"github.com/getvox/vox/srv/conn/protocol"
 	"github.com/gobwas/ws"
 	"github.com/gobwas/ws/wsutil"
-	"github.com/getvox/vox/srv/conn/protocol"
 	"github.com/iobrother/zoo/core/log"
 	"github.com/panjf2000/gnet/v2"
 )

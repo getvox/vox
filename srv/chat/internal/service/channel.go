@@ -49,9 +49,9 @@ func (g *Channel) Create(ctx context.Context, req *channel.CreateReq, rsp *chann
 
 	members := make([]*model.Member, 0, len(req.Members)+1)
 	members = append(members, &model.Member{
-		Id:     getBatchRsp.Ids[0],
-		Cid:    ch.Cid,
-		Member: req.Owner,
+		Id:  getBatchRsp.Ids[0],
+		Cid: ch.Cid,
+		Uid: req.Owner,
 	})
 	i := 1
 	for _, v := range req.Members {
@@ -59,9 +59,9 @@ func (g *Channel) Create(ctx context.Context, req *channel.CreateReq, rsp *chann
 			continue
 		}
 		member := &model.Member{
-			Id:     getBatchRsp.Ids[i],
-			Cid:    ch.Cid,
-			Member: v,
+			Id:  getBatchRsp.Ids[i],
+			Cid: ch.Cid,
+			Uid: v,
 		}
 		members = append(members, member)
 		i++
@@ -89,7 +89,7 @@ func (g *Channel) Create(ctx context.Context, req *channel.CreateReq, rsp *chann
 func (g *Channel) GetJoinedList(ctx context.Context, req *channel.GetJoinedListReq, rsp *channel.GetJoinedListRsp) (err error) {
 	db := runtime.GetDB()
 	var rows []*model.Channel
-	err = db.Model(&model.Member{}).Where(&model.Member{Member: req.Uin}).
+	err = db.Model(&model.Member{}).Where(&model.Member{Uid: req.Uin}).
 		Select([]string{
 			"channel.owner",
 			"channel.cid",
@@ -124,7 +124,7 @@ func (g *Channel) Sync(ctx context.Context, req *channel.SyncReq, rsp *channel.S
 	}
 
 	db := runtime.GetDB()
-	err = db.Model(&model.Channel{}).Where(&model.Member{Member: req.Uin}).
+	err = db.Model(&model.Channel{}).Where(&model.Member{Uid: req.Uin}).
 		Select([]string{
 			"channel.owner",
 			"channel.cid",
@@ -149,9 +149,9 @@ func (g *Channel) Sync(ctx context.Context, req *channel.SyncReq, rsp *channel.S
 func (g *Channel) Join(ctx context.Context, req *channel.JoinReq, rsp *channel.JoinRsp) (err error) {
 	db := runtime.GetDB()
 	v := model.Member{}
-	err = db.Model(&model.Member{}).Find(&v, &model.Member{Cid: req.Cid, Member: req.Uin}).Error
+	err = db.Model(&model.Member{}).Find(&v, &model.Member{Cid: req.Cid, Uid: req.Uin}).Error
 	if v.Id == 0 {
-		if err = db.Create(&model.Member{Cid: req.Cid, Member: req.Uin}).Error; err != nil {
+		if err = db.Create(&model.Member{Cid: req.Cid, Uid: req.Uin}).Error; err != nil {
 			log.Error(err)
 			return
 		}
@@ -173,9 +173,9 @@ func (g *Channel) InviteUser(ctx context.Context, req *channel.InviteUserReq, rs
 	i := 0
 	for _, v := range req.UserList {
 		member := &model.Member{
-			Id:     getBatchRsp.Ids[i],
-			Cid:    req.Cid,
-			Member: v,
+			Id:  getBatchRsp.Ids[i],
+			Cid: req.Cid,
+			Uid: v,
 		}
 		members = append(members, member)
 		i++
@@ -227,9 +227,9 @@ func (g *Channel) GetMemberList(ctx context.Context, req *channel.GetMemberListR
 
 func (g *Channel) GetMemberInfo(ctx context.Context, req *channel.GetMemberInfoReq, rsp *channel.GetMemberInfoRsp) (err error) {
 	//db := runtime.GetDB()
-	//v := model.Member{}
-	//if err = db.Model(&model.Member{}).
-	//	Find(&v, &model.Member{Cid: req.Cid, Member: req.Member}).
+	//v := model.Uid{}
+	//if err = db.Model(&model.Uid{}).
+	//	Find(&v, &model.Uid{Cid: req.Cid, Uid: req.Uid}).
 	//	Error; err != nil {
 	//	log.Error(err)
 	//	return
@@ -237,7 +237,7 @@ func (g *Channel) GetMemberInfo(ctx context.Context, req *channel.GetMemberInfoR
 	//if v.Id != 0 {
 	//	*rsp = channel.GetMemberInfoRsp{
 	//		Cid:   v.Cid,
-	//		Member:    v.Member,
+	//		Uid:    v.Uid,
 	//		CreatedAt: v.CreatedAt.Unix(),
 	//		UpdatedAt: v.UpdatedAt.Unix(),
 	//	}
@@ -247,12 +247,12 @@ func (g *Channel) GetMemberInfo(ctx context.Context, req *channel.GetMemberInfoR
 
 func (g *Channel) SetMemberInfo(ctx context.Context, req *channel.SetMemberInfoReq, rsp *channel.SetMemberInfoRsp) (err error) {
 	//db := runtime.GetDB()
-	//if err = db.Model(&model.Member{}).
-	//	Where(&model.Member{
+	//if err = db.Model(&model.Uid{}).
+	//	Where(&model.Uid{
 	//		Cid: req.Cid,
-	//		Member:  req.Member,
+	//		Uid:  req.Uid,
 	//	}).
-	//	Updates(&model.Member{
+	//	Updates(&model.Uid{
 	//		Nickname: req.Nickname,
 	//	}).Error; err != nil {
 	//	log.Error(err)

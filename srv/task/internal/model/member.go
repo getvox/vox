@@ -4,6 +4,7 @@ import (
 	"time"
 )
 
+// 群成员
 type Member struct {
 	Id        int64     `json:"id" gorm:"primaryKey;autoIncrement;comment:系统编号"`
 	Cid       string    `json:"cid" gorm:"size:64;not null;default:'';comment:群ID"`

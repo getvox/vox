@@ -281,18 +281,18 @@ func (s *Server) onC2CMsg(m *queue.Msg) error {
 
 func (s *Server) onGroupMsg(m *queue.Msg) (err error) {
 	db := runtime.GetDB()
-	var members []*model.GroupMember
-	cond := model.GroupMember{GroupId: m.To}
+	var members []*model.Member
+	cond := model.Member{Cid: m.To}
 	if err = db.Where(&cond).Find(&members).Error; err != nil {
 		return
 	}
 
 	js := runtime.GetJS()
 	for _, v := range members {
-		if v.Member == "" {
+		if v.Uid == "" {
 			continue
 		}
-		m.InboxUser = v.Member
+		m.InboxUser = v.Uid
 		b, err := proto.Marshal(m)
 		if err != nil {
 			continue
