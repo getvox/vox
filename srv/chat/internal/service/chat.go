@@ -27,11 +27,11 @@ func GetChatService() *Chat {
 }
 
 func (l *Chat) SendMsg(ctx context.Context, req *chat.SendReq, rsp *chat.SendRsp) (err error) {
-	log.Infof("Chat SendMsg ConvType=%d Type=%d Content=%s", req.ConvType, req.MsgType, req.Content)
+	log.Infof("Chat SendMsg ChannelType=%d Type=%d Content=%s", req.ChannelType, req.MsgType, req.Content)
 	now := time.Now().UnixMilli()
 	m := chat.Msg{
 		Id:            0,
-		ConvType:      req.ConvType,
+		ChannelType:   req.ChannelType,
 		Type:          req.MsgType,
 		Content:       req.Content,
 		From:          req.From,

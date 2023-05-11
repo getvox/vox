@@ -1,11 +1,11 @@
-package group
+package channel
 
 import (
 	"context"
 	"sync"
 
-	"github.com/iobrother/zim/gen/http/rest/group"
-	pb "github.com/iobrother/zim/gen/rpc/group"
+	"github.com/iobrother/zim/gen/http/rest/channel"
+	pb "github.com/iobrother/zim/gen/rpc/channel"
 	"github.com/iobrother/zim/srv/rest/internal/client"
 )
 
@@ -23,34 +23,34 @@ func GetService() *Service {
 	return service
 }
 
-func (s *Service) Create(ctx context.Context, req *group.CreateReq) (rsp *group.CreateRsp, err error) {
+func (s *Service) Create(ctx context.Context, req *channel.CreateReq) (rsp *channel.CreateRsp, err error) {
 	reqL := pb.CreateReq{
 		Owner:   req.Owner,
 		Members: req.Members,
 		Name:    req.Name,
-		GroupId: req.GroupId,
+		Cid:     req.Cid,
 		Notice:  req.Notice,
 		Intro:   req.Intro,
 		Avatar:  req.Avatar,
 	}
 
-	cli := client.GetGroupClient()
+	cli := client.GetChannelClient()
 	rspL, err := cli.Create(ctx, &reqL)
 	if err != nil {
 		return
 	}
-	rsp.GroupId = rspL.GroupId
+	rsp.Cid = rspL.Cid
 	return
 }
 
-func (s *Service) Add(ctx context.Context, req *group.AddReq) (rsp *group.AddRsp, err error) {
-	reqL := pb.InviteUserToGroupReq{
-		GroupId:  req.GroupId,
+func (s *Service) Add(ctx context.Context, req *channel.AddReq) (rsp *channel.AddRsp, err error) {
+	reqL := pb.InviteUserReq{
+		Cid:      req.Cid,
 		UserList: req.Members,
 	}
 
-	cli := client.GetGroupClient()
-	_, err = cli.InviteUserToGroup(ctx, &reqL)
+	cli := client.GetChannelClient()
+	_, err = cli.InviteUser(ctx, &reqL)
 
 	return
 }

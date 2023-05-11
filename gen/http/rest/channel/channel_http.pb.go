@@ -2,9 +2,9 @@
 // versions:
 // - protoc-gen-zoo-http v0.1.0
 // - protoc                (unknown)
-// source: http/rest/group/group.proto
+// source: http/rest/channel/channel.proto
 
-package group
+package channel
 
 import (
 	context "context"
@@ -17,20 +17,20 @@ var _ = context.TODO
 var _ = gin.New
 var _ = server.NewServer
 
-type GroupHTTPService interface {
+type ChannelHTTPService interface {
 	// Add ...
 	Add(context.Context, *AddReq) (*AddRsp, error)
 	// Create ...
 	Create(context.Context, *CreateReq) (*CreateRsp, error)
 }
 
-func RegisterGroupHTTPService(g *gin.RouterGroup, svc GroupHTTPService) {
+func RegisterChannelHTTPService(g *gin.RouterGroup, svc ChannelHTTPService) {
 	r := g.Group("")
-	r.POST("/zim/groups", _Group_Create0_HTTP_Handler(svc))
-	r.POST("/zim/groups/:group_id/members", _Group_Add0_HTTP_Handler(svc))
+	r.POST("/zim/channels", _Channel_Create0_HTTP_Handler(svc))
+	r.POST("/zim/channels/:cid/members", _Channel_Add0_HTTP_Handler(svc))
 }
 
-func _Group_Create0_HTTP_Handler(svc GroupHTTPService) gin.HandlerFunc {
+func _Channel_Create0_HTTP_Handler(svc ChannelHTTPService) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		c := &server.Context{Context: ctx}
 		shouldBind := func(req *CreateReq) error {
@@ -56,7 +56,7 @@ func _Group_Create0_HTTP_Handler(svc GroupHTTPService) gin.HandlerFunc {
 		c.JSON(200, rsp)
 	}
 }
-func _Group_Add0_HTTP_Handler(svc GroupHTTPService) gin.HandlerFunc {
+func _Channel_Add0_HTTP_Handler(svc ChannelHTTPService) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		c := &server.Context{Context: ctx}
 		shouldBind := func(req *AddReq) error {

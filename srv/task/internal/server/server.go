@@ -178,16 +178,16 @@ func (s *Server) storeMysql(m *queue.Msg) {
 
 	db := runtime.GetDB()
 	msg := model.Msg{
-		Id:         m.Id,
-		ConvType:   int(m.ConvType),
-		Content:    m.Content,
-		Type:       int(m.Type),
-		From:       m.From,
-		To:         m.To,
-		AtUserList: atUserList,
-		ReadTime:   0,
-		SendTime:   m.SendTime,
-		Uuid:       m.Uuid,
+		Id:          m.Id,
+		ChannelType: int(m.ChannelType),
+		Content:     m.Content,
+		Type:        int(m.Type),
+		From:        m.From,
+		To:          m.To,
+		AtUserList:  atUserList,
+		ReadTime:    0,
+		SendTime:    m.SendTime,
+		Uuid:        m.Uuid,
 	}
 
 	if err := db.Create(&msg).Error; err != nil {
@@ -227,9 +227,9 @@ func (s *Server) consumeNew() {
 }
 
 func (s *Server) onNew(m *queue.Msg) (err error) {
-	if m.ConvType == constant.ConvTypeC2C {
+	if m.ChannelType == constant.ConvTypeC2C {
 		err = s.onC2CMsg(m)
-	} else if m.ConvType == constant.ConvTypeGroup {
+	} else if m.ChannelType == constant.ConvTypeGroup {
 		err = s.onGroupMsg(m)
 	}
 

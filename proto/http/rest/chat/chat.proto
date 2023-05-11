@@ -14,7 +14,7 @@ service Im {
 }
 
 message SendReq {
-  int32 conv_type = 1;
+  int32 channel_type = 1;
   int32 msg_type = 2;
   string from = 3;
   string to = 4;

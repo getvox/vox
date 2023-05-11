@@ -2,9 +2,9 @@
 // versions:
 // - protoc-gen-rpcx v0.3.0
 // - protoc          (unknown)
-// source: http/rest/group/group.proto
+// source: http/rest/channel/channel.proto
 
-package group
+package channel
 
 import (
 	context "context"
@@ -20,8 +20,8 @@ var _ = client.NewClient
 var _ = protocol.NewMessage
 
 //================== interface skeleton ===================
-type GroupAble interface {
-	// GroupAble can be used for interface verification.
+type ChannelAble interface {
+	// ChannelAble can be used for interface verification.
 
 	// Create is server rpc method as defined
 	Create(ctx context.Context, args *CreateReq, reply *CreateRsp) (err error)
@@ -31,19 +31,19 @@ type GroupAble interface {
 }
 
 //================== server skeleton ===================
-type GroupImpl struct{}
+type ChannelImpl struct{}
 
-// ServeForGroup starts a server only registers one service.
+// ServeForChannel starts a server only registers one service.
 // You can register more services and only start one server.
 // It blocks until the application exits.
-func ServeForGroup(addr string) error {
+func ServeForChannel(addr string) error {
 	s := server.NewServer()
-	s.RegisterName("Group", new(GroupImpl), "")
+	s.RegisterName("Channel", new(ChannelImpl), "")
 	return s.Serve("tcp", addr)
 }
 
 // Create is server rpc method as defined
-func (s *GroupImpl) Create(ctx context.Context, args *CreateReq, reply *CreateRsp) (err error) {
+func (s *ChannelImpl) Create(ctx context.Context, args *CreateReq, reply *CreateRsp) (err error) {
 	// TODO: add business logics
 
 	// TODO: setting return values
@@ -53,7 +53,7 @@ func (s *GroupImpl) Create(ctx context.Context, args *CreateReq, reply *CreateRs
 }
 
 // Add is server rpc method as defined
-func (s *GroupImpl) Add(ctx context.Context, args *AddReq, reply *AddRsp) (err error) {
+func (s *ChannelImpl) Add(ctx context.Context, args *AddReq, reply *AddRsp) (err error) {
 	// TODO: add business logics
 
 	// TODO: setting return values
@@ -63,20 +63,20 @@ func (s *GroupImpl) Add(ctx context.Context, args *AddReq, reply *AddRsp) (err e
 }
 
 //================== client stub ===================
-// Group is a client wrapped XClient.
-type GroupClient struct {
+// Channel is a client wrapped XClient.
+type ChannelClient struct {
 	xclient client.XClient
 }
 
-// NewGroupClient wraps a XClient as GroupClient.
-// You can pass a shared XClient object created by NewXClientForGroup.
-func NewGroupClient(xclient client.XClient) *GroupClient {
-	return &GroupClient{xclient: xclient}
+// NewChannelClient wraps a XClient as ChannelClient.
+// You can pass a shared XClient object created by NewXClientForChannel.
+func NewChannelClient(xclient client.XClient) *ChannelClient {
+	return &ChannelClient{xclient: xclient}
 }
 
-// NewXClientForGroup creates a XClient.
+// NewXClientForChannel creates a XClient.
 // You can configure this client with more options such as etcd registry, serialize type, select algorithm and fail mode.
-func NewXClientForGroup(addr string) (client.XClient, error) {
+func NewXClientForChannel(addr string) (client.XClient, error) {
 	d, err := client.NewPeer2PeerDiscovery("tcp@"+addr, "")
 	if err != nil {
 		return nil, err
@@ -85,37 +85,37 @@ func NewXClientForGroup(addr string) (client.XClient, error) {
 	opt := client.DefaultOption
 	opt.SerializeType = protocol.ProtoBuffer
 
-	xclient := client.NewXClient("Group", client.Failtry, client.RoundRobin, d, opt)
+	xclient := client.NewXClient("Channel", client.Failtry, client.RoundRobin, d, opt)
 
 	return xclient, nil
 }
 
 // Create is client rpc method as defined
-func (c *GroupClient) Create(ctx context.Context, args *CreateReq) (reply *CreateRsp, err error) {
+func (c *ChannelClient) Create(ctx context.Context, args *CreateReq) (reply *CreateRsp, err error) {
 	reply = &CreateRsp{}
 	err = c.xclient.Call(ctx, "Create", args, reply)
 	return reply, err
 }
 
 // Add is client rpc method as defined
-func (c *GroupClient) Add(ctx context.Context, args *AddReq) (reply *AddRsp, err error) {
+func (c *ChannelClient) Add(ctx context.Context, args *AddReq) (reply *AddRsp, err error) {
 	reply = &AddRsp{}
 	err = c.xclient.Call(ctx, "Add", args, reply)
 	return reply, err
 }
 
 //================== oneclient stub ===================
-// GroupOneClient is a client wrapped oneClient.
-type GroupOneClient struct {
+// ChannelOneClient is a client wrapped oneClient.
+type ChannelOneClient struct {
 	serviceName string
 	oneclient   *client.OneClient
 }
 
-// NewGroupOneClient wraps a OneClient as GroupOneClient.
-// You can pass a shared OneClient object created by NewOneClientForGroup.
-func NewGroupOneClient(oneclient *client.OneClient) *GroupOneClient {
-	return &GroupOneClient{
-		serviceName: "Group",
+// NewChannelOneClient wraps a OneClient as ChannelOneClient.
+// You can pass a shared OneClient object created by NewOneClientForChannel.
+func NewChannelOneClient(oneclient *client.OneClient) *ChannelOneClient {
+	return &ChannelOneClient{
+		serviceName: "Channel",
 		oneclient:   oneclient,
 	}
 }
@@ -123,14 +123,14 @@ func NewGroupOneClient(oneclient *client.OneClient) *GroupOneClient {
 // ======================================================
 
 // Create is client rpc method as defined
-func (c *GroupOneClient) Create(ctx context.Context, args *CreateReq) (reply *CreateRsp, err error) {
+func (c *ChannelOneClient) Create(ctx context.Context, args *CreateReq) (reply *CreateRsp, err error) {
 	reply = &CreateRsp{}
 	err = c.oneclient.Call(ctx, c.serviceName, "Create", args, reply)
 	return reply, err
 }
 
 // Add is client rpc method as defined
-func (c *GroupOneClient) Add(ctx context.Context, args *AddReq) (reply *AddRsp, err error) {
+func (c *ChannelOneClient) Add(ctx context.Context, args *AddReq) (reply *AddRsp, err error) {
 	reply = &AddRsp{}
 	err = c.oneclient.Call(ctx, c.serviceName, "Add", args, reply)
 	return reply, err

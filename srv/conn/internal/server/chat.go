@@ -30,7 +30,7 @@ func (s *Server) handleSend(c *Connection, p *protocol.Packet) (err error) {
 	}
 
 	r := chat.SendReq{
-		ConvType:      req.ConvType,
+		ChannelType:   req.ChannelType,
 		MsgType:       req.MsgType,
 		From:          req.From,
 		To:            req.To,
@@ -111,15 +111,15 @@ func (s *Server) handleSync(c *Connection, p *protocol.Packet) (err error) {
 
 	for _, v := range rspL.List {
 		msg := &protocol.Msg{
-			Id:         v.Id,
-			ConvType:   v.ConvType,
-			Type:       v.Type,
-			Content:    v.Content,
-			From:       v.From,
-			To:         v.To,
-			SendTime:   v.SendTime,
-			Uuid:       v.Uuid,
-			AtUserList: v.AtUserList,
+			Id:          v.Id,
+			ChannelType: v.ChannelType,
+			Type:        v.Type,
+			Content:     v.Content,
+			From:        v.From,
+			To:          v.To,
+			SendTime:    v.SendTime,
+			Uuid:        v.Uuid,
+			AtUserList:  v.AtUserList,
 		}
 		rsp.List = append(rsp.List, msg)
 	}

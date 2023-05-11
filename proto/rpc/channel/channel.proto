@@ -1,0 +1,155 @@
+syntax = "proto3";
+
+package rpc.channel;
+
+service Channel {
+  rpc Sync(SyncReq) returns (SyncRsp) {}
+  rpc Create(CreateReq) returns (CreateRsp) {}
+  rpc GetJoinedList(GetJoinedListReq) returns (GetJoinedListRsp) {}
+  rpc Join(JoinReq) returns (JoinRsp) {}
+  rpc InviteUser(InviteUserReq) returns (InviteUserRsp) {}
+  rpc Quit(QuitReq) returns (QuitRsp) {}
+  rpc Kick(KickReq) returns (KickRsp) {}
+  rpc Dismiss(DismissReq) returns (DismissRsp) {}
+
+  rpc GetMemberList(GetMemberListReq) returns (GetMemberListRsp) {}
+  rpc GetMemberInfo(GetMemberInfoReq) returns (GetMemberInfoRsp) {}
+  rpc SetMemberInfo(SetMemberInfoReq) returns (SetMemberInfoRsp) {}
+}
+
+message ChannelInfo {
+  // 群主
+  string owner = 1;
+  // 群名称
+  string name = 2;
+  string cid = 3;
+  string notice = 4;
+  string intro = 5;
+  string avatar = 6;
+  int64 created_at = 7;
+  int64 updated_at = 8;
+  int32 type = 9;
+}
+
+message CreateReq {
+  // 群主
+  string owner = 1;
+  // 成员
+  repeated string members = 2;
+  // 群名称
+  string name = 3;
+  // 群ID，如果不传，zim会生成一个群ID
+  string cid = 4;
+  string notice = 5;
+  string intro = 6;
+  string avatar = 7;
+}
+
+message CreateRsp {
+  // 群ID
+  string cid = 1;
+}
+
+message GetJoinedListReq {
+  string uin = 1;
+}
+
+message GetJoinedListRsp {
+  repeated ChannelInfo list = 1;
+}
+
+message SyncReq {
+  string uin = 1;
+  int64 offset = 2;
+  int64 limit = 3;
+}
+
+message SyncRsp {
+  repeated ChannelInfo list = 1;
+}
+
+message JoinReq {
+  string uin = 1;
+  string cid = 2;
+}
+
+message JoinRsp {
+}
+
+message InviteUserReq {
+  string uin = 1;
+  string cid = 2;
+  repeated string user_list = 3;
+}
+
+message InviteUserRsp {
+  // TODO
+}
+
+message QuitReq {
+  string uin = 1;
+  string cid = 2;
+}
+
+message QuitRsp {
+}
+
+message KickReq {
+  string uin = 1;
+  string cid = 2;
+  repeated string user_list = 3;
+}
+
+message KickRsp {
+  // TODO
+}
+
+message DismissReq {
+  string uin = 1;
+  string cid = 2;
+}
+
+message DismissRsp {
+}
+
+message MemberInfo {
+  string cid = 1;
+  string member = 2;
+  string nickname = 3;
+  int64 created_at = 4;
+  int64 updated_at = 5;
+}
+
+message GetMemberListReq {
+  string uin = 1;
+  string cid = 2;
+  int64 offset = 3;
+  int64 limit = 4;
+}
+
+message GetMemberListRsp {
+  repeated MemberInfo list = 1;
+}
+
+message GetMemberInfoReq {
+  string cid = 1;
+  string member = 2;
+}
+
+message GetMemberInfoRsp {
+  string cid = 1;
+  string member = 2;
+  string nickname = 3;
+  int64 created_at = 4;
+  int64 updated_at = 5;
+}
+
+message SetMemberInfoReq {
+  string cid = 1;
+  string member = 2;
+  string nickname = 3;
+}
+
+message SetMemberInfoRsp {
+
+}

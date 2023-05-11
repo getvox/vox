@@ -34,8 +34,8 @@ func before() error {
 	if err := db.AutoMigrate(
 		&model.Msg{},
 		&model.User{},
-		&model.Group{},
-		&model.GroupMember{},
+		&model.Channel{},
+		&model.Member{},
 	); err != nil {
 		log.Error(err)
 		return err

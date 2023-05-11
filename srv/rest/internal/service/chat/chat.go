@@ -25,7 +25,7 @@ func GetService() *Service {
 
 func (s *Service) Send(ctx context.Context, req *chat.SendReq) (rsp *chat.SendRsp, err error) {
 	reqL := pb.SendReq{
-		ConvType:      req.ConvType,
+		ChannelType:   req.ChannelType,
 		MsgType:       req.MsgType,
 		From:          req.From,
 		To:            req.To,

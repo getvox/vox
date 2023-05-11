@@ -4,13 +4,13 @@ import (
 	"github.com/iobrother/zoo/core/config"
 	"github.com/iobrother/zoo/core/transport/rpc/client"
 
+	"github.com/iobrother/zim/gen/rpc/channel"
 	"github.com/iobrother/zim/gen/rpc/chat"
-	"github.com/iobrother/zim/gen/rpc/group"
 )
 
 var (
-	chatClient  *chat.ChatClient
-	groupClient *group.GroupClient
+	chatClient    *chat.ChatClient
+	channelClient *channel.ChannelClient
 )
 
 type Registry struct {
@@ -36,8 +36,8 @@ func GetChatClient() *chat.ChatClient {
 	return chatClient
 }
 
-func GetGroupClient() *group.GroupClient {
-	if groupClient == nil {
+func GetChannelClient() *channel.ChannelClient {
+	if channelClient == nil {
 		r := &Registry{}
 		config.Scan("registry", &r)
 
@@ -48,8 +48,8 @@ func GetGroupClient() *group.GroupClient {
 			client.EtcdAddr(r.EtcdAddr),
 		)
 		cli := cc.GetXClient()
-		groupClient = group.NewGroupClient(cli)
+		channelClient = channel.NewChannelClient(cli)
 	}
 
-	return groupClient
+	return channelClient
 }
