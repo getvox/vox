@@ -1,7 +1,5 @@
 module github.com/getvox/vox
 
-go 1.20
-
 require (
 	github.com/gin-contrib/cors v1.4.0
 	github.com/gin-gonic/gin v1.9.0
@@ -13,7 +11,7 @@ require (
 	github.com/panjf2000/gnet/v2 v2.2.7
 	github.com/redis/go-redis/v9 v9.0.4
 	github.com/smallnest/rpcx v1.8.6
-	github.com/spf13/cast v1.5.0
+	github.com/spf13/cast v1.5.1
 	go.uber.org/zap v1.24.0
 	google.golang.org/genproto v0.0.0-20221227171554-f9683d7f8bef
 	google.golang.org/protobuf v1.30.0
