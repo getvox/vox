@@ -1,7 +1,5 @@
 module github.com/getvox/vox
 
-go 1.20
-
 require (
 	github.com/gin-contrib/cors v1.4.0
 	github.com/gin-gonic/gin v1.9.0
@@ -12,7 +10,7 @@ require (
 	github.com/nats-io/nats.go v1.25.0
 	github.com/panjf2000/gnet/v2 v2.2.7
 	github.com/redis/go-redis/v9 v9.0.4
-	github.com/smallnest/rpcx v1.8.6
+	github.com/smallnest/rpcx v1.8.9
 	github.com/spf13/cast v1.5.0
 	go.uber.org/zap v1.24.0
 	google.golang.org/genproto v0.0.0-20221227171554-f9683d7f8bef
@@ -71,10 +69,7 @@ require (
 	github.com/klauspost/cpuid/v2 v2.2.4 // indirect
 	github.com/klauspost/reedsolomon v1.11.7 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
-	github.com/lucas-clemente/quic-go v0.31.1 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
-	github.com/marten-seemann/qtls-go1-18 v0.1.4 // indirect
-	github.com/marten-seemann/qtls-go1-19 v0.1.2 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.17 // indirect
 	github.com/miekg/dns v1.1.51 // indirect
@@ -88,13 +83,16 @@ require (
 	github.com/pelletier/go-toml/v2 v2.0.6 // indirect
 	github.com/philhofer/fwd v1.1.2 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
+	github.com/quic-go/qtls-go1-19 v0.3.2 // indirect
+	github.com/quic-go/qtls-go1-20 v0.2.2 // indirect
+	github.com/quic-go/quic-go v0.34.0 // indirect
 	github.com/rcrowley/go-metrics v0.0.0-20201227073835-cf1acfcdf475 // indirect
 	github.com/rpcxio/libkv v0.5.1 // indirect
 	github.com/rpcxio/rpcx-etcd v0.2.0 // indirect
 	github.com/rpcxio/rpcx-plugins v0.0.0-20220730073026-120f5ed14272 // indirect
 	github.com/rs/cors v1.8.3 // indirect
 	github.com/rubyist/circuitbreaker v2.2.1+incompatible // indirect
-	github.com/smallnest/quick v0.0.0-20220703133648-f13409fa6c67 // indirect
+	github.com/smallnest/quick v0.1.0 // indirect
 	github.com/soheilhy/cmux v0.1.5 // indirect
 	github.com/spf13/afero v1.9.3 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
