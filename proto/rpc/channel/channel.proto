@@ -43,11 +43,22 @@ message CreateReq {
   string notice = 5;
   string intro = 6;
   string avatar = 7;
+  int32 type = 8;
 }
 
 message CreateRsp {
-  // 群ID
-  string cid = 1;
+  // 群主
+  string owner = 1;
+  // 成员
+  repeated string members = 2;
+  // 群名称
+  string name = 3;
+  // 群ID，如果不传，zim会生成一个群ID
+  string cid = 4;
+  string notice = 5;
+  string intro = 6;
+  string avatar = 7;
+  int32 type = 8;
 }
 
 message GetJoinedListReq {

@@ -82,6 +82,11 @@ func (g *Channel) Create(ctx context.Context, req *channel.CreateReq, rsp *chann
 		return
 	}
 	rsp.Cid = ch.Cid
+	rsp.Type = req.Type
+	rsp.Name = req.Name
+	rsp.Owner = req.Owner
+	rsp.Avatar = req.Avatar
+	rsp.Intro = req.Intro
 
 	return nil
 }

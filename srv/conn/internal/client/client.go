@@ -5,13 +5,15 @@ import (
 	"github.com/iobrother/zoo/core/log"
 	"github.com/iobrother/zoo/core/transport/rpc/client"
 
+	"github.com/getvox/vox/gen/rpc/channel"
 	"github.com/getvox/vox/gen/rpc/chat"
 	"github.com/getvox/vox/gen/rpc/sess"
 )
 
 var (
-	chatClient *chat.ChatClient
-	sessClient *sess.SessClient
+	chatClient    *chat.ChatClient
+	channelClient *channel.ChannelClient
+	sessClient    *sess.SessClient
 )
 
 type Registry struct {
@@ -61,4 +63,26 @@ func GetChatClient() *chat.ChatClient {
 		chatClient = chat.NewChatClient(cli)
 	}
 	return chatClient
+}
+
+func GetChannelClient() *channel.ChannelClient {
+	if channelClient == nil {
+		r := &Registry{}
+		if err := config.Scan("registry", &r); err != nil {
+			log.Errorf("GetChannelClient error=%v", err)
+			return nil
+		}
+		cc, err := client.NewClient(
+			client.WithServiceName("Channel"),
+			client.BasePath(r.BasePath),
+			client.EtcdAddr(r.EtcdAddr),
+		)
+		if err != nil {
+			log.Errorf("GetChannelClient error=%v", err)
+			return nil
+		}
+		cli := cc.GetXClient()
+		channelClient = channel.NewChannelClient(cli)
+	}
+	return channelClient
 }

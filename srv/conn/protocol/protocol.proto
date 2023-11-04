@@ -22,6 +22,9 @@ enum CmdId {
   Cmd_Sync = 1102;              // 同步消息，从redis缓存中获取
   Cmd_Send = 1103;
   Cmd_MsgAck = 1104;
+
+  // channel
+  Cmd_CreateChannel = 2001;
 }
 
 enum ErrorCode {
@@ -113,4 +116,24 @@ message MsgAckReq {
 }
 
 message MsgAckRsp {
+}
+
+message CreateChannelReq {
+  string name = 1;
+  string cid = 2;
+  int32 type = 3;
+  repeated string members = 4;
+  string owner = 5;
+  string avatar = 6;
+  string intro = 7;
+}
+
+message CreateChannelRsp {
+  string name = 1;
+  string cid = 2;
+  int32 type = 3;
+  repeated string members = 4;
+  string owner = 5;
+  string avatar = 6;
+  string intro = 7;
 }
